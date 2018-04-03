@@ -1,29 +1,29 @@
 <html>
-  <head>
+<head>
     <title>Our 3D creation</title>
-	
+
     <!-- This is the CSS style of this page. -->
     <link rel="stylesheet" href="stylesheet.css" type="text/css">
-	
-  </head>
-  
-  
-  <body>
+
+</head>
+
+
+<body>
     <!--include the three.js library-->
-    <script src="js/three.js"> </script>
+    <script src="js/three.js"></script>
     <!--and the trackball code-->
-    <script src="js/OrbitControls.js"> </script>
+    <script src="js/OrbitControls.js"></script>
     <!--include the dat.gui.min.js library to edit the scene in real time-->
-    <script src="js/dat.gui.min.js"> </script>
+    <script src="js/dat.gui.min.js"></script>
 
 
 
-	<!-- This div element is the top text space on the page. -->
+    <!-- This div element is the top text space on the page. -->
     <div id="info">
-      <p>This is a threeJS Test <br> Tried by Amy </p>
+        <p>This is a threeJS Test <br> Tried by Amy </p>
     </div>
-	
-	<!-- This script section is where we add THREE.JS code. -->
+
+    <!-- This script section is where we add THREE.JS code. -->
     <script>
         //create the scene and camera
         var scene = new THREE.Scene();
@@ -32,26 +32,50 @@
         var gui = new dat.GUI();
 
         // Add fog effect to the scene. This is white right now.
-        // scene.fog = new THREE.FogExp2(0xffffff, 0.2);
+        //scene.fog = new THREE.FogExp2(0xffffff, 0.04);
 
         var ratio = window.innerWidth / window.innerHeight;
         var camera = new THREE.PerspectiveCamera(45, ratio, 1, 1000);
-        // Place the camera
+        // Place the camera (at the coordinate of its neareast parent.)
         camera.position.set(1, 5, 8);
         // Determine which point the camera is looking at.
         camera.lookAt(0, 0, 0);
 
+        // Controller to control the position of the camera.
+        var cameraZRotation = new THREE.Group();
+        var cameraZPosition = new THREE.Group();
+        var cameraXRotation = new THREE.Group();
+        var cameraYRotation = new THREE.Group();
+
+        cameraZRotation.add(camera);
+        cameraZPosition.add(cameraZRotation);
+        cameraXRotation.add(cameraZPosition);
+        cameraYRotation.add(cameraXRotation);
+
+        cameraZPosition.position.z = 25;
+
+        scene.add(cameraYRotation);
+
+
+
     </script>
-	
-	<!-- This script section is the function to create and to update the renderer. -->
-	<script src="scripts/UpdateRenderer.js"> </script>
-	
-	<!-- This script section stores the functions about creating objects. -->
-	<script src="scripts/CreateObjects.js"> </script>
-	
-	
-	<!-- This script section is where we add THREE.JS code. -->
-    <script>	
+
+    <!-- This script section is the function to create and to update the renderer. -->
+    <script src="scripts/UpdateRenderer.js"></script>
+
+    <!-- This script section stores the functions about creating objects. -->
+    <script src="scripts/CreateObjects.js"></script>
+
+
+    <!-- This script section is where we add THREE.JS code. -->
+    <script>
+        // Use the clock to calculate time elapse.
+        var clock = new THREE.Clock();
+
+        // Make texture for objects.
+        var loader = new THREE.TextureLoader();
+
+        scene.background = CubeMap();
 
         // Change the color of the background to grey.
         renderer.setClearColor(0x555555);
@@ -64,12 +88,12 @@
         box.name = 'box-to-get-by-name';
 
         // Rotate the plane 90 degree.
-        plane.rotation.x = Math.PI/2;
+        plane.rotation.x = Math.PI / 2;
 
 
         scene.add(box);
         scene.add(plane);
-        
+
 
 
         // After creating a point light, you must place it at a right coordinate.
@@ -84,10 +108,23 @@
         gui.add(pointLight.position, 'y', 1, 2);
         gui.add(pointLight.position, 'x', -3, 3);
         gui.add(pointLight.position, 'z', -3, 3);
+        // gui.add(spotLight, 'penumbra', 0, 1);
 
         // Make a sphere to represent the point light.
         var sphere = getSphere(0.05);
         pointLight.add(sphere);
+
+        // Help the shadow casting of the light.
+        var helper = new THREE.CameraHelper(pointLight.shadow.camera);
+        scene.add(helper);
+
+        var ambientLight = getAmbientLight(2);
+        scene.add(ambientLight);
+
+        // Control camera position.
+        gui.add(cameraZPosition.position, 'z', 0, 100);
+        gui.add(cameraXRotation.rotation, 'x', -Math.PI, Math.PI);
+        gui.add(cameraYRotation.rotation, 'y', -Math.PI, Math.PI);
 
 
 
@@ -111,13 +148,35 @@
             var planeRef = scene.getObjectByName('plane-to-get-by-name');
             planeRef.rotation.z += 0.001;
 
+            if (cameraZPosition.position.z > 0)
+                cameraZPosition.position.z -= 0.05;
+
             // Get the box without a new var. The outside var box is accesible here.
-            // Change the scale of every child of this scene with traverse method. 
+            // Change the scale of every child of this scene with traverse method.
             box.traverse(function (child) {
                 if (child.name != 'box-to-get-by-name')
                     child.rotation.y += 0.001;
             });
 
+            // Calculate time elapsed with the clock.
+            var timeElapsed = clock.getElapsedTime();
+
+            // Rotate camera left and right.
+            //cameraZRotation.rotation.z += Math.sin(timeElapsed) * 0.001 * Math.PI;
+            cameraZRotation.position.y += Math.sin(timeElapsed * 5) * 0.01 * Math.PI;
+
+            // Changing shape of the boxes.
+            box.children.forEach(function (child, index) {
+                child.scale.y = (Math.sin(timeElapsed * 5 + index) + 1) / 2 + 0.001;
+                child.position.y = child.scale.y / 4;
+            });
+
+            // Torture the shape.
+            plane.geometry.vertices.forEach(function (vertex, index) {
+                vertex.z += Math.sin(timeElapsed + index * 0.1) * 0.005;
+            });
+            // Make the shape changeable in updating
+            plane.geometry.verticesNeedUpdate = true;
 
             //finally perform a recoursive call to update again
             //this must be called because the mouse change the camera position
@@ -125,20 +184,12 @@
         };
 
         requestAnimationFrame(MyUpdateLoop);
-	
+
     </script>
-	
-	
-  </body>
+
+
+</body>
 </html>
-
-
-
-
-
-
-
-
 
 
 
