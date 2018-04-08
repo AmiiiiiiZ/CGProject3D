@@ -15,7 +15,8 @@
     <script src="js/OrbitControls.js"></script>
     <!--include the dat.gui.min.js library to edit the scene in real time-->
     <script src="js/dat.gui.min.js"></script>
-
+    <!--include the stats.js library-->
+    <script src="js/stats.js"></script>
 
 
     <!-- This div element is the top text space on the page. -->
@@ -27,6 +28,10 @@
     <script>
         //create the scene and camera
         var scene = new THREE.Scene();
+
+        // Monitor the performance.
+        var stats = new Stats();
+        document.body.appendChild(stats.dom);
 
         // Create interaction control panel.
         var gui = new dat.GUI();
@@ -55,8 +60,6 @@
         cameraZPosition.position.z = 25;
 
         scene.add(cameraYRotation);
-
-
 
     </script>
 
@@ -126,6 +129,38 @@
         gui.add(cameraXRotation.rotation, 'x', -Math.PI, Math.PI);
         gui.add(cameraYRotation.rotation, 'y', -Math.PI, Math.PI);
 
+        // Particle system.
+        var particleGeo = new THREE.Geometry();
+
+        var particleMat = new THREE.PointsMaterial({
+            color: 'rgb(255, 255, 255)',
+            size: 1,
+            map: new THREE.TextureLoader().load('img/textures/particle.jpg'),
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        var particleCount = 20000;
+        var particleDistance = 100;
+
+        // Push random points to the geometry.
+        for (var i = 0; i < particleCount; i++) {
+            var posX = (Math.random() - 0.5) * particleDistance;
+            var posY = (Math.random() - 0.5) * particleDistance;
+            var posZ = (Math.random() - 0.5) * particleDistance;
+            // Make a point with the Vector3 object.
+            var particle = new THREE.Vector3(posX, posY, posZ);
+
+            particleGeo.vertices.push(particle);
+        }
+
+        // Create the system.
+        var particleSystem = new THREE.Points(
+            particleGeo,
+            particleMat
+        );
+        scene.add(particleSystem);
 
 
         //////////////
@@ -143,6 +178,8 @@
         var MyUpdateLoop = function () {
             //call the render with the scene and the camera
             renderer.render(scene, camera);
+            // Update the stats to monitor.
+            stats.update();
 
             // Get the plane when you can't use the var reference outside the fuction.
             var planeRef = scene.getObjectByName('plane-to-get-by-name');
