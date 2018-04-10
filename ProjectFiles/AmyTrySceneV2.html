@@ -1,0 +1,135 @@
+﻿<html>
+<head>
+    <title>Our 3D creation</title>
+
+    <!-- This is the CSS style of this page. -->
+    <link rel="stylesheet" href="stylesheet.css" type="text/css">
+
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+
+    <!--include the sql.js library-->
+    <script type="text/javascript" src="js/sql.js"></script>
+
+    <!--include the three.js library-->
+    <script src="js/three.js"></script>
+    <!--and the trackball code-->
+    <script src="js/OrbitControls.js"></script>
+    <!--include the dat.gui.min.js library to edit the scene in real time-->
+    <script src="js/dat.gui.min.js"></script>
+    <!--include the stats.js library-->
+    <script src="js/stats.js"></script>
+
+</head>
+
+
+<body>
+
+    <!-- This div element is the top text space on the page. -->
+    <div id="info">
+        <p>
+            This is a Grid test experimented by Amy. Click your mouse to start moving the box! <br>
+            Up arrow - Move forward; Down arrow - Move backward; <br>
+            Left arrow - Move left; Right arrow - Move right; <br>
+            W key - Move up; S key - Move down; ENTER key - Set the box here. 
+        </p>
+    </div>
+
+
+
+    <!-- This script section is where we add THREE.JS code. -->
+    <script>
+        //create the scene and camera
+        var scene = new THREE.Scene();
+
+        // Monitor the performance.
+        var stats = new Stats();
+        document.body.appendChild(stats.dom);
+
+        // Create interaction control panel.
+        var gui = new dat.GUI();
+
+        var ratio = window.innerWidth / window.innerHeight;
+        var camera = new THREE.PerspectiveCamera(45, ratio, 1, 1000);
+        // Place the camera (at the coordinate of its neareast parent.)
+        camera.position.set(12, 18, 28);
+        // Determine which point the camera is looking at.
+        camera.lookAt(0, 0, 0);
+
+        scene.add(camera);
+
+    </script>
+
+    <!-- This script section is the function to create and to update the renderer. -->
+    <script src="scripts/UpdateRenderer.js"></script>
+
+    <!-- This script section stores the functions about creating objects. -->
+    <script src="scripts/CreateObjectsNew.js"></script>
+
+    <!-- This script section stores the functions about controlling the box with your keyboard. -->
+    <script src="scripts/KeyboardOperation.js"></script>
+
+
+    <!-- This script section is where we add THREE.JS code. -->
+    <script>
+
+        // Change the color of the background to grey.
+        renderer.setClearColor(0x555555);
+
+        var box = getBox(1, 1, 1);
+        box.position.set(0, 0, 0);
+
+        // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
+        var plane = getPlane(101);
+        plane.position.y = -0.5;
+
+
+        scene.add(box);
+        scene.add(plane);
+
+
+        // Environment light
+        var ambientLight = getAmbientLight(3);
+        scene.add(ambientLight);
+
+
+
+
+        //////////////
+        // CONTROLS //
+        //////////////
+
+        // move mouse and: left   click to rotate,
+        //                 middle click to zoom,
+        //                 right  click to pan
+        // add the new control and link to the current camera to transform its position
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+        // Constantly update the renderer/scene.
+        var MyUpdateLoop = function () {
+            //call the render with the scene and the camera
+            renderer.render(scene, camera);
+            // Update the stats to monitor.
+            stats.update();
+
+
+            //finally perform a recursive call to update again
+            //this must be called because the mouse change the camera position
+            requestAnimationFrame(MyUpdateLoop);
+        };
+
+        requestAnimationFrame(MyUpdateLoop);
+
+    </script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
