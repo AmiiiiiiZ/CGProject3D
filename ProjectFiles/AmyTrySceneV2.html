@@ -75,21 +75,54 @@
         // Change the color of the background to grey.
         renderer.setClearColor(0x555555);
 
-        var box = getBox(1, 1, 1);
+        var box = getBox(1, 1, 1, 0xffffff);
         box.position.set(0, 0, 0);
 
         // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
-        var plane = getPlane(101);
-        plane.position.y = -0.5;
 
+        var ground = getPlane(101);
+        ground.position.y = -0.50;
+        ground.material.color.setHex(0x88aa88);
+        ground.material.wireframe = false;
+        scene.add(ground);
 
         scene.add(box);
-        scene.add(plane);
+
+
+        // Update box color
+        var Color = function () {
+            this.color = 0xee6666; // RGB with alpha
+
+            // Define render logic ...
+            box.material.color.setHex(this.color);
+
+            this.SetColor = function(){
+                box.material.color.setHex(this.color);
+            }
+        };
+
+
+        var colorChanger = new Color();
+
+        gui.addColor(colorChanger, 'color');
+
+
+
 
 
         // Environment light
         var ambientLight = getAmbientLight(3);
         scene.add(ambientLight);
+
+        var pointLight = getPointLight(1);
+        scene.add(pointLight);
+        
+
+        gui.add(pointLight, 'intensity', 0.5, 5);
+        gui.add(pointLight.position, 'y', 10, 30);
+        gui.add(pointLight.position, 'x', -30, 30);
+        gui.add(pointLight.position, 'z', -30, 30);
+
 
 
 
@@ -112,6 +145,7 @@
             // Update the stats to monitor.
             stats.update();
 
+            colorChanger.SetColor();
 
             //finally perform a recursive call to update again
             //this must be called because the mouse change the camera position

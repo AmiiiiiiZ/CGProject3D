@@ -1,10 +1,12 @@
 
 // Create a box cube.
-function getBox(w, h, d) {
+function getBox(w, h, d, color) {
     var geometry = new THREE.BoxGeometry(w, h, d);
 
     // Phong material can interact with light.
-    var material = new THREE.MeshNormalMaterial();
+    var material = new THREE.MeshPhongMaterial({
+        color: color
+    });
 	var mesh = new THREE.Mesh(
 		geometry,
 		material 
@@ -13,23 +15,11 @@ function getBox(w, h, d) {
     // Make the box cast shadow.
     mesh.castShadow = true;
 
-	return mesh;
+    return mesh;
 }
 
-// Cube map for 6 faces of a cube
-function CubeMap() {
-    var path = 'img/cubemap/';
-    var format = '.jpg';
-    var urls = [
-        path + 'px' + format, path + 'nx' + format,
-        path + 'py' + format, path + 'ny' + format,
-        path + 'pz' + format, path + 'nz' + format,
-    ]
-    var reflectionCube = new THREE.CubeTextureLoader().load(urls);
-    reflectionCube.format = THREE.RGBFormat;
 
-    return reflectionCube;
-}
+
 
 // Crate a group of boxes.
 function getBoxGrid(amount, separationMultiplier) {
@@ -37,14 +27,14 @@ function getBoxGrid(amount, separationMultiplier) {
 
     // Column
     for (var i = 0; i < amount; i++) {
-        var obj = getBox(0.5, 0.5, 0.5);
+        var obj = getBox(1, 1, 1);
         obj.position.x = i * separationMultiplier;
         obj.position.y = obj.geometry.parameters.height / 2;
         group.add(obj);
 
         // Row
         for (var j = 1; j < amount; j++) {
-            var obj = getBox(0.5, 0.5, 0.5);
+            var obj = getBox(1, 1, 1);
             obj.position.x = i * separationMultiplier;
             obj.position.y = obj.geometry.parameters.height / 2;
             obj.position.z = j * separationMultiplier;
@@ -63,7 +53,7 @@ function getPlane(size) {
     // The last two params are segments(vertices).
     var geometry = new THREE.PlaneGeometry(size, size,size,size);
 
-    var material = new THREE.MeshBasicMaterial({
+    var material = new THREE.MeshPhongMaterial({
         color: 0xffeeee,
         side: THREE.DoubleSide
     });
@@ -101,12 +91,37 @@ function getSphere(size) {
 }
 
 
+// Cube map for 6 faces of a cube
+function CubeMap() {
+    var path = 'img/cubemap/';
+    var format = '.jpg';
+    var urls = [
+        path + 'px' + format, path + 'nx' + format,
+        path + 'py' + format, path + 'ny' + format,
+        path + 'pz' + format, path + 'nz' + format,
+    ]
+    var reflectionCube = new THREE.CubeTextureLoader().load(urls);
+    reflectionCube.format = THREE.RGBFormat;
+
+    return reflectionCube;
+}
+
+
+
 // Create a point light like a light bulb.
 function getPointLight(intensity) {
     var light = new THREE.PointLight('rgb(255,220,180)', intensity);
 
+    light.position.x = 10;
+    light.position.z = 20;
+    light.position.y = 15;
+
     // Make the light have shadow effect.
     light.castShadow = true;
+
+    light.shadow.bias = 0.0001;  // Eliminate gliches of the shadow.
+    light.shadow.mapSize.width = 2048;  // Make the shadow clearer. Default is 1024.
+    light.shadow.mapSize.height = 2048;
 
     return light;
 }
@@ -118,6 +133,10 @@ function getSpotLight(intensity) {
 
     // Make the light have shadow effect.
     light.castShadow = true;
+
+    light.position.x = 100;
+    light.position.z = 100;
+    light.position.y = 100;
 
     light.shadow.bias = 0.001;  // Eliminate gliches of the shadow.
     light.shadow.mapSize.width = 2048;  // Make the shadow clearer. Default is 1024.
@@ -132,12 +151,16 @@ function getDirectionalLight(intensity) {
 
     // Make the light have shadow effect.
     light.castShadow = true;
+    light.position.x = 100;
+    light.position.z = 100;
+    light.position.y = 100;
+
 
     // Make the shadow field larger.
-    light.shadow.camera.left = -5;
-    light.shadow.camera.bottom = -5;
-    light.shadow.camera.right = 5;
-    light.shadow.camera.top = 5;
+    light.shadow.camera.left = -100;
+    light.shadow.camera.bottom = -100;
+    light.shadow.camera.right = 100;
+    light.shadow.camera.top = 100;
 
     return light;
 }

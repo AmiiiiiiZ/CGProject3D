@@ -1,0 +1,16 @@
+
+
+the columns of the block table:
+
+ - id
+ - color
+ - x
+ - y
+ - z
+ - material
+ - model_type: Lightbulb, boxBlock, LegoBlockA/B/C ....
+ - 
+
+Other idea??????
+
+
