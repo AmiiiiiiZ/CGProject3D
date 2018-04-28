@@ -1,6 +1,6 @@
- open# CGProject3D
+# CGProject3D
 
-# To see my test project, please go to folder ProjectFiles, and open AmyTrySceneV2.html in your browser. AmyTryScene.html is the old test version.
+# To see my test project, please go to folder ProjectFiles, and open AmyTrySceneV2.html in your browser. AmyTryScene.html is the old test version. (You must configure your computer as a server, otherwise the page may not load successfully.)
 
 
 # For teammates: 
