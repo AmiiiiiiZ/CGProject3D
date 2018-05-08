@@ -1,37 +1,38 @@
 
+// An array of keys we have pressed.
 var keyboard = {};
 
 
 
-
+// Do this when key down
 function keyDown(event){
     keyboard[event.keyCode] = true;
 
     if (keyboard[37]) { // left arrow key
 
         if (box.position.x > -50)
-        box.position.x -= 1;
+        box.position.x -= 2;
 
     }
 
     if (keyboard[39]) { // right arrow key
 
         if (box.position.x < 50)
-        box.position.x += 1;
+        box.position.x += 2;
 
     }
 
     if (keyboard[38]) { // up arrow key
 
         if (box.position.z > -50)
-        box.position.z -= 1;
+        box.position.z -= 2;
 
     }
 
     if (keyboard[40]) { // down arrow key
 
         if (box.position.z < 50)
-        box.position.z += 1;
+        box.position.z += 2;
 
     }
 
@@ -56,7 +57,7 @@ function keyDown(event){
 
     if (keyboard[13]) { // enter - set the block here.
 
-        var copy = getBox(1, 1, 1, box.material.color);
+        var copy = blockMesh.clone();
         copy.position.x = box.position.x;
         copy.position.y = box.position.y;
         copy.position.z = box.position.z;
@@ -66,10 +67,10 @@ function keyDown(event){
 
 }
 
+// Do this when key up
 function keyUp(event){
 	keyboard[event.keyCode] = false;
 }
 
-window.addEventListener('keydown', keyDown);
-window.addEventListener('keyup', keyUp);
+
 

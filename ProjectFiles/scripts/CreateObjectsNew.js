@@ -1,15 +1,16 @@
 
+
+var boxMaterial = new THREE.MeshPhongMaterial();
+var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
+
 // Create a box cube.
 function getBox(w, h, d, color) {
-    var geometry = new THREE.BoxGeometry(w, h, d);
 
     // Phong material can interact with light.
-    var material = new THREE.MeshPhongMaterial({
-        color: color
-    });
+    boxMaterial.color.setHex(color);
 	var mesh = new THREE.Mesh(
-		geometry,
-		material 
+        boxGeometry,
+        boxMaterial 
     );
 
     // Make the box cast shadow.
@@ -21,32 +22,6 @@ function getBox(w, h, d, color) {
 
 
 
-// Crate a group of boxes.
-function getBoxGrid(amount, separationMultiplier) {
-    var group = new THREE.Group();
-
-    // Column
-    for (var i = 0; i < amount; i++) {
-        var obj = getBox(1, 1, 1);
-        obj.position.x = i * separationMultiplier;
-        obj.position.y = obj.geometry.parameters.height / 2;
-        group.add(obj);
-
-        // Row
-        for (var j = 1; j < amount; j++) {
-            var obj = getBox(1, 1, 1);
-            obj.position.x = i * separationMultiplier;
-            obj.position.y = obj.geometry.parameters.height / 2;
-            obj.position.z = j * separationMultiplier;
-            group.add(obj);
-        }
-    }
-
-    group.position.x = -(separationMultiplier * (amount - 1)) / 2;
-    group.position.z = -(separationMultiplier * (amount - 1)) / 2;
-
-    return group;
-}
 
 // Create a plane square.
 function getPlane(size) {
@@ -90,21 +65,6 @@ function getSphere(size) {
     return mesh;
 }
 
-
-// Cube map for 6 faces of a cube
-function CubeMap() {
-    var path = 'img/cubemap/';
-    var format = '.jpg';
-    var urls = [
-        path + 'px' + format, path + 'nx' + format,
-        path + 'py' + format, path + 'ny' + format,
-        path + 'pz' + format, path + 'nz' + format,
-    ]
-    var reflectionCube = new THREE.CubeTextureLoader().load(urls);
-    reflectionCube.format = THREE.RGBFormat;
-
-    return reflectionCube;
-}
 
 
 

@@ -1,4 +1,6 @@
-﻿<html>
+﻿<!DOCTYPE html>
+
+<html>
 <head>
     <title>Our 3D creation</title>
 
@@ -18,6 +20,7 @@
     <script src="js/dat.gui.min.js"></script>
     <!--include the stats.js library-->
     <script src="js/stats.js"></script>
+    <script src="js/PLYLoader.js"></script>
 
 </head>
 
@@ -30,7 +33,7 @@
             This is a Grid test experimented by Amy. Click your mouse to start moving the box! <br>
             Up arrow - Move forward; Down arrow - Move backward; <br>
             Left arrow - Move left; Right arrow - Move right; <br>
-            W key - Move up; S key - Move down; ENTER key - Set the box here. 
+            W key - Move up; S key - Move down; ENTER key - Set the box here.
         </p>
     </div>
 
@@ -64,6 +67,8 @@
 
     <!-- This script section stores the functions about creating objects. -->
     <script src="scripts/CreateObjectsNew.js"></script>
+    <script src="scripts/Collections.js"></script>
+    <script src="scripts/ObjectsCreation.js"></script>
 
     <!-- This script section stores the functions about controlling the box with your keyboard. -->
     <script src="scripts/KeyboardOperation.js"></script>
@@ -75,8 +80,6 @@
         // Change the color of the background to grey.
         renderer.setClearColor(0x555555);
 
-        var box = getBox(1, 1, 1, 0xffffff);
-        box.position.set(0, 0, 0);
 
         // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
 
@@ -86,27 +89,19 @@
         ground.material.wireframe = false;
         scene.add(ground);
 
-        scene.add(box);
+        
 
-
-        // Update box color
-        var Color = function () {
+        // Used to update block color
+        var Color = function (object) {
             this.color = 0xee6666; // RGB with alpha
 
             // Define render logic ...
-            box.material.color.setHex(this.color);
+            object.material.color.setHex(this.color);
 
-            this.SetColor = function(){
-                box.material.color.setHex(this.color);
+            this.SetColor = function () {
+                object.material.color.setHex(this.color);
             }
         };
-
-
-        var colorChanger = new Color();
-
-        gui.addColor(colorChanger, 'color');
-
-
 
 
 
@@ -116,17 +111,16 @@
 
         var pointLight = getPointLight(1);
         scene.add(pointLight);
-        
+
 
         gui.add(pointLight, 'intensity', 0.5, 5);
         gui.add(pointLight.position, 'y', 10, 30);
         gui.add(pointLight.position, 'x', -30, 30);
         gui.add(pointLight.position, 'z', -30, 30);
 
-
-
-
-
+        var blockAdded = false;
+        var colorChanger = null;
+        var box = null;
         //////////////
         // CONTROLS //
         //////////////
@@ -145,11 +139,32 @@
             // Update the stats to monitor.
             stats.update();
 
-            colorChanger.SetColor();
 
             //finally perform a recursive call to update again
             //this must be called because the mouse change the camera position
             requestAnimationFrame(MyUpdateLoop);
+
+            if (blockMesh != null && blockGeometry != null && !blockAdded) {
+                box = getBlock(0x88aa88);
+
+                scene.add(box);
+
+                colorChanger = new Color(box);
+
+                gui.addColor(colorChanger, 'color');
+
+                // Add functions to event listener. 
+                window.addEventListener('keydown', keyDown);
+                window.addEventListener('keyup', keyUp);
+
+
+                blockAdded = true;
+            }
+
+            if (blockAdded) {
+                colorChanger.SetColor();
+            }
+
         };
 
         requestAnimationFrame(MyUpdateLoop);
