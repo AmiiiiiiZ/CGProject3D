@@ -20,7 +20,10 @@
     <script src="js/dat.gui.min.js"></script>
     <!--include the stats.js library-->
     <script src="js/stats.js"></script>
+
     <script src="js/PLYLoader.js"></script>
+
+    <script src="js/jquery.min.js"></script>
 
 </head>
 
@@ -35,10 +38,41 @@
             Left arrow - Move left; Right arrow - Move right; <br>
             W key - Move up; S key - Move down; ENTER key - Set the box here.
         </p>
+
     </div>
 
+    
+        <!-- Control panel to interact with the scene -->
+        <div id="controls">
+            Control Panel
+            <br />
 
+            - Move the box
+            <div id="camera-position">
+                <button id="up">up</button>
+                <br />
+                <button id="forward">forward</button>
+                <br />
+                <button id="left">left</button> explore <button id="right">right</button>
+                <br />
+                <button id="backward">backward</button>
+                <br />
+                <button id="down">down</button>
+                <br />
+                <br />
 
+            </div>
+
+            <br />
+
+            
+            <button>Control button</button>
+            <button>Control button</button>
+            <button>Control button</button>
+            <button>Control button</button>
+            <button>Control button</button>
+            <button>Control button</button>
+        </div>
     <!-- This script section is where we add THREE.JS code. -->
     <script>
         //create the scene and camera
@@ -59,6 +93,9 @@
         camera.lookAt(0, 0, 0);
 
         scene.add(camera);
+
+        
+
 
     </script>
 
@@ -103,6 +140,15 @@
             }
         };
 
+        var box = getBox(0x000000);
+        box.material = new THREE.MeshPhongMaterial();
+
+        scene.add(box);
+
+        colorChanger = new Color(box);
+
+        gui.addColor(colorChanger, 'color');
+
 
 
         // Environment light
@@ -118,9 +164,49 @@
         gui.add(pointLight.position, 'x', -30, 30);
         gui.add(pointLight.position, 'z', -30, 30);
 
-        var blockAdded = false;
-        var colorChanger = null;
-        var box = null;
+
+        
+        $("#up").mousedown(function () {
+            if (box.position.y < 50)
+                box.position.y += 1;
+            console.log("button clicked!");
+        });
+
+        $("#forward").mousedown(function () {
+
+            if (box.position.z > -50)
+                box.position.z -= 1;
+            console.log("button clicked!");
+        });
+
+        $("#left").mousedown(function () {
+            if (box.position.x > -50)
+                box.position.x -= 1;
+            console.log("button clicked!");
+        });
+
+        $("#right").mousedown(function () {
+            if (box.position.x < 50)
+                box.position.x += 1;
+            console.log("button clicked!");
+        });
+
+
+        $("#backward").mousedown(function () {
+            if (box.position.z < 50)
+                box.position.z += 1;
+            console.log("button clicked!");
+        });
+
+        $("#down").mousedown(function () {
+            if (box.position.y > 0)
+                box.position.y -= 1;
+            console.log("button clicked!");
+        });
+
+
+
+
         //////////////
         // CONTROLS //
         //////////////
@@ -139,31 +225,11 @@
             // Update the stats to monitor.
             stats.update();
 
+            colorChanger.SetColor();
 
             //finally perform a recursive call to update again
             //this must be called because the mouse change the camera position
             requestAnimationFrame(MyUpdateLoop);
-
-            if (blockMesh != null && blockGeometry != null && !blockAdded) {
-                box = getBlock(0x88aa88);
-
-                scene.add(box);
-
-                colorChanger = new Color(box);
-
-                gui.addColor(colorChanger, 'color');
-
-                // Add functions to event listener. 
-                window.addEventListener('keydown', keyDown);
-                window.addEventListener('keyup', keyUp);
-
-
-                blockAdded = true;
-            }
-
-            if (blockAdded) {
-                colorChanger.SetColor();
-            }
 
         };
 

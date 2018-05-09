@@ -6,16 +6,25 @@ var colorCollection = new Object();
 // A function to decide which material to use. (Use old material of existing color or create a new material of different color)
 function useMaterial(color, collection) {
 
+    var material = null;
     // When the color is old
-
-
-    // When the color is new 
-    var material = new THREE.MeshPhongMaterial();
-    material.color.setHex(color);
-    collection[color] = material;
+    if (collection[color] != null) {
+        material = collection[color];
+        console.log("old material used!");
+    }
+    else {
+        // When the color is new 
+        material = new THREE.MeshPhongMaterial();
+        material.color.setHex(color);
+        collection[color] = material;
+        console.log("new material created!");
+    }
 
     return material;
 }
+
+
+
 
 
 // A collection of blocks existing in the scene. To test if there are blocks under the place 
@@ -25,8 +34,14 @@ var blockCollection = new Object();
 // A function to validate if a new block can be set here.
 function canSetBlockHere(x, y, z) {
 
+    var key = x.toString() + "-" + y.toString() + "-" + z.toString();
 
-
+    if (blockCollection[key]) {
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 
@@ -69,7 +84,7 @@ loader.load('models/singleBlock.ply', function (geometry) {
     var sca = new THREE.Matrix4();
     var tra = new THREE.Matrix4();
 
-    sca.makeScale(3.2 / size.length(), 2.63 / size.length(), 3.2 / size.length());
+    sca.makeScale(3.5 / size.length(), 2.63 / size.length(), 3.5 / size.length());
     tra.makeTranslation(-center.x, -center.y + 0.13, -center.z);
 
     blockMesh = new THREE.Mesh(geometry, blockMaterial);

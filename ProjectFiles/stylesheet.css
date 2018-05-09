@@ -10,19 +10,44 @@ body {
 #info {
     position: absolute;
     top: 10px;
-    width: 100%;
+    left:200px;
     text-align: center;
     color: #0f0;
-    padding: 0;
+    margin: auto;
 }
-    #info p {
-        background-color: #000;
-    }
+#info p {
+    background-color: #000;
+}
 canvas {
 	width: 100%; 
 	height: 100%;
 }
 
 
-	
-	
+#controls {
+    position: absolute;
+    text-align: center;
+    top: 100px;
+    color: #0f0;
+    border: solid 1px #0f0;
+}
+button{
+    display:block;
+    margin:auto;
+    background-color:black;
+    color:white;
+    border:solid #0f0 2px;
+}
+button:active{
+    background-color:grey;
+    border-color:#080;
+}
+button:hover{
+    background-color:grey;
+}
+
+#camera-position button{
+    float:none;
+    text-align:center;
+    display:inline;
+}
