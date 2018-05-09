@@ -1,6 +1,5 @@
 
 
-var boxMaterial = new THREE.MeshPhongMaterial();
 var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 // Create a box cube.
@@ -9,7 +8,7 @@ function getBox(color) {
     // Phong material can interact with light.
 	var mesh = new THREE.Mesh(
         boxGeometry,
-        useMaterial(color, colorCollection) 
+        useMaterial(color, colorCollection, false) 
     );
 
     // Make the box cast shadow.
@@ -19,6 +18,25 @@ function getBox(color) {
 }
 
 
+
+
+// Make a transparent block
+function getTransparentBottom() {
+
+    var hintGeometry = new THREE.PlaneGeometry(1, 1);
+    var hintMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    hintMaterial.wireframe = true;
+
+    // Phong material can interact with light.
+    var mesh = new THREE.Mesh(
+        hintGeometry,
+        hintMaterial
+    );
+
+    mesh.rotation.x = Math.PI / 2;
+    
+    return mesh;
+}
 
 
 
@@ -31,8 +49,6 @@ function getPlane(size) {
         color: 0xffeeee,
         side: THREE.DoubleSide
     });
-
-    material.wireframe = true;
 
     var mesh = new THREE.Mesh(
         geometry,
@@ -50,7 +66,7 @@ function getPlane(size) {
 
 // Create a ball.
 function getSphere(size) {
-    var geometry = new THREE.SphereGeometry(size, 24, 24);
+    var geometry = new THREE.SphereGeometry(size);
 
     // Basic material does not interact with light. Its color is fixed without light.
     var material = new THREE.MeshBasicMaterial({
@@ -64,7 +80,22 @@ function getSphere(size) {
     return mesh;
 }
 
+// Create a cone.
+function getCone(size) {
+    var geometry = new THREE.ConeGeometry(size);
 
+    // Basic material does not interact with light. Its color is fixed without light.
+    var material = new THREE.MeshPhongMaterial({
+        color: 0xffffff
+    });
+    var mesh = new THREE.Mesh(
+        geometry,
+        material
+    );
+    mesh.rotation.x += Math.PI;
+
+    return mesh;
+}
 
 
 // Create a point light like a light bulb.

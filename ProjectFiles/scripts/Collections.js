@@ -4,7 +4,7 @@ var colorCollection = new Object();
 
 
 // A function to decide which material to use. (Use old material of existing color or create a new material of different color)
-function useMaterial(color, collection) {
+function useMaterial(color, collection, transparency) {
 
     var material = null;
     // When the color is old
@@ -14,7 +14,7 @@ function useMaterial(color, collection) {
     }
     else {
         // When the color is new 
-        material = new THREE.MeshPhongMaterial();
+        material = new THREE.MeshPhongMaterial({ transparent: transparency, opacity: 0.5 });
         material.color.setHex(color);
         collection[color] = material;
         console.log("new material created!");
@@ -24,11 +24,30 @@ function useMaterial(color, collection) {
 }
 
 
+function updateBlockPosition(object) {
 
+    bottomBlock.position.x = object.position.x;
+    bottomBlock.position.y = -0.49;
+    bottomBlock.position.z = object.position.z;
+
+    ball.position.x = box.position.x;
+    ball.position.z = box.position.z;
+}
+
+// Hide the block being controlled
+function hideBlock() {
+
+}
+
+// Show the control block again
+function showBlock() {
+
+}
 
 
 // A collection of blocks existing in the scene. To test if there are blocks under the place 
 var blockCollection = new Object();
+
 
 
 // A function to validate if a new block can be set here.
@@ -47,14 +66,20 @@ function canSetBlockHere(x, y, z) {
 
 
 // A function to keep the location of the block newly set there.
-function recordBlockPosition(x, y, z) {
+function setBlockHere(x, y, z) {
 
-    // Make the x,y,z values a string as the key.
+    var key = x.toString() + "-" + y.toString() + "-" + z.toString();
 
+    var copy = getBox(colorChanger.color);
+    copy.position.x = x;
+    copy.position.y = y;
+    copy.position.z = z;
+    console.log("new box created here!");
 
-    // Create the key of in the collection.
+    // Store the created box by making a key of its position in the collection.
+    blockCollection[key] = true;
 
-
+    scene.add(copy);
 }
 
 

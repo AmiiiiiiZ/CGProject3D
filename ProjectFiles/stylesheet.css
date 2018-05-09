@@ -31,6 +31,9 @@ canvas {
     color: #0f0;
     border: solid 1px #0f0;
 }
+hr {
+    border: solid 1px #0f0;
+}
 button{
     display:block;
     margin:auto;
