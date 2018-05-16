@@ -18,6 +18,22 @@ function getBox(color) {
 }
 
 
+var boxBoneGeometry = new THREE.BoxGeometry(1.1, 1.1, 1.1);
+var boxBoneMaterial = new THREE.MeshBasicMaterial();
+// Create a box cube frame.
+function getBoxBone() {
+
+    // Phong material can interact with light.
+    var mesh = new THREE.Mesh(
+        boxBoneGeometry,
+        boxBoneMaterial
+    );
+    boxBoneMaterial.color.setHex(0xffffff);
+    boxBoneMaterial.wireframe = true;
+    mesh.name = 'bone';
+
+    return mesh;
+}
 
 
 // Make a transparent block
@@ -82,12 +98,11 @@ function getSphere(size) {
 
 // Create a cone.
 function getCone(size) {
-    var geometry = new THREE.ConeGeometry(size);
+    var geometry = new THREE.ConeGeometry(size,1.3,4);
 
     // Basic material does not interact with light. Its color is fixed without light.
-    var material = new THREE.MeshPhongMaterial({
-        color: 0xffffff
-    });
+    var material = new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true });
+
     var mesh = new THREE.Mesh(
         geometry,
         material

@@ -30,19 +30,10 @@ function updateBlockPosition(object) {
     bottomBlock.position.y = -0.49;
     bottomBlock.position.z = object.position.z;
 
-    ball.position.x = box.position.x;
-    ball.position.z = box.position.z;
+    ball.position.x = object.position.x;
+    ball.position.z = object.position.z;
 }
 
-// Hide the block being controlled
-function hideBlock() {
-
-}
-
-// Show the control block again
-function showBlock() {
-
-}
 
 
 // A collection of blocks existing in the scene. To test if there are blocks under the place 
@@ -75,6 +66,7 @@ function setBlockHere(x, y, z) {
     copy.position.y = y;
     copy.position.z = z;
     console.log("new box created here!");
+    copy.name = "block";
 
     // Store the created box by making a key of its position in the collection.
     blockCollection[key] = true;

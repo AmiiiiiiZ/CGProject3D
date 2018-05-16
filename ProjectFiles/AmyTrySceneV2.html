@@ -9,9 +9,6 @@
 
     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 
-    <!--include the sql.js library-->
-    <script type="text/javascript" src="js/sql.js"></script>
-
     <!--include the three.js library-->
     <script src="js/three.js"></script>
     <!--and the trackball code-->
@@ -46,14 +43,15 @@
     <div id="controls">
         Control Panel
         <br />
-
         - Move the box
+        <hr />
+
         <div id="camera-position">
             <button id="up">up (W)</button>
             <br />
             <button id="forward">forward (R)</button>
             <br />
-            <button id="left">left (A)</button> MOVE BOX <button id="right">right (D)</button>
+            <button id="left">left (A)</button> MOVE <button id="right">right (D)</button>
             <br />
             <button id="backward">backward (F)</button>
             <br />
@@ -63,16 +61,21 @@
 
         </div>
         <button id="set-box">Set block here!<br />(Enter)</button>
-
-        <hr />
-        - Undone -
         <br />
+        Control Virtual Block: <br /><button id="move">by Click</button>
+        <button id="hide">Hide Control Block</button>
+        <br />
+        Selected Block:
+        <button id="color">Pick Color</button>
+        <button id="remove">Remove Block</button>
+        <button id="remove-all">Remove All Blocks</button>
 
-        <button id="hide">Hide Block</button>
-        <button id="undo">Undo</button>
-        <button id="redo">Redo</button>
-        <button>Control button</button>
-        <button>Control button</button>
+        <br />
+        <button id="save">Save Your Work!</button>
+
+        <button id="load">Load Previous Work!</button>
+
+        <br />
 
 
     </div>
@@ -129,6 +132,7 @@
         var ground = getPlane(101);
         ground.position.y = -0.50;
         ground.material.color.setHex(0x88aa88);
+        ground.name = 'ground';
         scene.add(ground);
 
         
@@ -147,6 +151,7 @@
 
         var box = getBox(0x000000);
         box.material = new THREE.MeshPhongMaterial();
+        box.name = 'control';
 
         scene.add(box);
 
@@ -154,6 +159,11 @@
 
         gui.addColor(colorChanger, 'color');
 
+
+
+        var bone = getBoxBone();
+        bone.visible = false;
+        scene.add(bone);
 
 
         // Environment light
@@ -173,16 +183,22 @@
         var bottomBlock = getTransparentBottom();
         bottomBlock.position.y = -0.49;
         scene.add(bottomBlock);
+        bottomBlock.name = 'bottom';
 
-        // Make a sphere to point out the control box.
-        var ball = getCone(0.2);
+        // Make a sphere/cone to point out the control box.
+        var ball = getCone(0.3);
         scene.add(ball);
 
         ball.position.x = box.position.x;
         ball.position.z = box.position.z;
+        ball.name = 'cone';
 
         // Make buttons work.
         setButtonEvents();
+
+
+        var raycaster = new THREE.Raycaster();
+        var selectedObj = false;
 
 
 
@@ -210,7 +226,7 @@
             var timeElapsed = clock.getElapsedTime();
 
             ball.position.y = box.position.y + 2 + Math.sin(timeElapsed * 2) / 2;
-
+            ball.rotation.y -= 0.05;
 
             //finally perform a recursive call to update again
             //this must be called because the mouse change the camera position
