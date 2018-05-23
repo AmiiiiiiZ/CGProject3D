@@ -1,0 +1,554 @@
+﻿<html>
+<head>
+    <title>Our 3D creation</title>
+
+    <!-- This is the CSS style of this page. -->
+    <link rel="stylesheet" href="stylesheet.css" type="text/css">
+
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+
+
+</head>
+
+
+
+<body>
+
+    <!-- This div element is the top text space on the page. -->
+
+
+
+</body>
+
+    <!--include the sql.js library-->
+    <script type="text/javascript" src="js/sql.js"></script>
+
+    <!--include the three.js library-->
+    <script src="js/three.js"></script>
+    <!--and the trackball code-->
+    <script src="js/OrbitControls.js"></script>
+    <!--include the dat.gui.min.js library to edit the scene in real time-->
+    <script src="js/dat.gui.min.js"></script>
+    <!--include the stats.js library-->
+    <script src="js/stats.js"></script>
+        <!-- This script section is the function to create and to update the renderer. -->
+    <script src="scripts/UpdateRenderer.js"></script>
+
+    <!-- This script section stores the functions about creating objects. -->
+    <script src="scripts/CreateObjectsNew.js"></script>
+
+    <!-- This script section stores the functions about controlling the box with your keyboard. -->
+    <script src="scripts/KeyboardOperation.js"></script>
+    <!-- This script section is where we add THREE.JS code. -->
+    <script>
+        //create the scene and camera
+        var scene = new THREE.Scene();
+
+        // Monitor the performance.
+        var stats = new Stats();
+        document.body.appendChild(stats.dom);
+
+        // Create interaction control panel.
+        var gui = new dat.GUI();
+
+        var ratio = window.innerWidth / window.innerHeight;
+        var camera = new THREE.PerspectiveCamera(45, ratio, 1, 1000);
+        // Place the camera (at the coordinate of its neareast parent.)
+        camera.position.set(12, 18, 28);
+        
+        // Determine which point the camera is looking at.
+        camera.lookAt(0, 0, 0);
+        
+        
+//var cameralight = new THREE.PointLight( new THREE.Color(1,1,1), 0.8 );
+//  camera.add( cameralight );
+// scene.add(camera);
+
+		    //create the perspective camera
+		    //for parameters see https://threejs.org/docs/#api/cameras/PerspectiveCamer
+		    //var camera2 = new THREE.PerspectiveCamera(45,ratio,0.00001,1000);
+		    //var Pos = new THREE.Vector3(0,0,0);
+		    //camera2.position.set(Pos.x,Pos.y,Pos.z);
+		    var Dir = new THREE.Vector3(0,0,1);
+		    //camera2.lookAt(Dir.x,Dir.y,Dir.z);
+    		
+    			var camera2 = new THREE.PerspectiveCamera(45,ratio,1,1000);
+					//scene.add(camera2);
+					camera2.position.set(0,2,5);
+					camera2.lookAt(scene.position);	
+				  var cameralight2 = new THREE.PointLight( new THREE.Color(1,1,1), 0.8 );
+  				camera2.add( cameralight2 );
+  				scene.add(camera2);
+  
+			
+				var strDownloadMime = "image/octet-stream";
+				var saveLink = document.createElement('div');
+        saveLink.style.position = 'absolute';
+        saveLink.style.bottom = '10px';
+        saveLink.style.width = '100px';
+        saveLink.style.background = '#FFFFFF';
+        saveLink.style.textAlign = 'center';
+        saveLink.innerHTML =
+            '<a href="#" id="saveLink">Save Frame</a>';
+        document.body.appendChild(saveLink);
+        document.getElementById("saveLink").addEventListener('click', saveAsImage);
+        
+        //Add camera move
+				var cameraMove = document.createElement('div');
+        cameraMove.style.position = 'absolute';
+        cameraMove.style.bottom = '100px';
+        cameraMove.style.width = '100px';
+        cameraMove.style.background = '#FFFFFF';
+        cameraMove.style.textAlign = 'center';
+        cameraMove.innerHTML =
+            '<a href="#" id="cameraMove">Camera Move</a>';
+        document.body.appendChild(cameraMove);
+        document.getElementById("cameraMove").addEventListener('click', changeCamera);
+				
+				
+				var showVariable = document.createElement('div');
+				showVariable.style.position = 'absolute';
+        showVariable.style.bottom = '300px';
+        showVariable.style.width = '100px';
+        //showVariable.style.background = '#FFFFFF';
+        showVariable.style.textAlign = 'center';
+			  showVariable.style.color = 'black';
+				showVariable.innerHTML = "Hi";
+				document.body.appendChild(showVariable);
+				
+				function changeCamera() {
+					
+					
+					camera_flag *= -1;
+					scene.add(group);
+					
+				}
+        // Change the color of the background to grey.
+        renderer.setClearColor(0x555555);
+
+        var box = getBox(1, 1, 1, 0xffffff);
+        box.position.set(0, 0, 0);
+
+        // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
+
+        var ground = getPlane(101);
+        ground.position.y = -0.50;
+        ground.material.color.setHex(0x88aa88);
+        ground.material.wireframe = false;
+        scene.add(ground);
+
+        scene.add(box);
+
+		//cylinder1
+		var geometry_cylinder1 = new THREE.CylinderGeometry( 0.5, 0.5, 0.7, 20 );
+		var material_cylinder1 = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+		var cylinder1 = new THREE.Mesh( geometry_cylinder1, material_cylinder1 );
+		cylinder1.position.set(0,2.5,0);
+		//scene.add( cylinder1 );
+		
+		//cylinder2
+		var geometry_cylinder2 = new THREE.CylinderGeometry( 0.25, 0.25, 1, 20 );
+		var material_cylinder2 = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+		var cylinder2 = new THREE.Mesh( geometry_cylinder2, material_cylinder2 );
+		cylinder2.position.set(0,2.5,0);
+		//scene.add( cylinder2 );
+
+    //cube1
+    var geometry_cube1 = new THREE.BoxGeometry(1.4,1.5,0.9);
+    var material_cube1 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+    //material_cube1.color=  new THREE.Color(1,0,1);
+    var cube1 = new THREE.Mesh(geometry_cube1, material_cube1);
+		cube1.position.set(0,1.25,0);
+		//scene.add(cube1);
+
+    //cube2 (right-arm)
+    var geometry_cube2 = new THREE.BoxGeometry(0.4,1.4,0.5);
+    var material_cube2 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+    var cube2 = new THREE.Mesh(geometry_cube2, material_cube2);
+		cube2.position.set(0.9,1.3,-0.5);
+		cube2.rotateOnAxis( new THREE.Vector3(1,0,0), 32);
+		//scene.add(cube2);
+		
+		//cube3 (left-arm)
+    var geometry_cube3 = new THREE.BoxGeometry(0.4,1.35,0.5);
+    var material_cube3 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+    var cube3 = new THREE.Mesh(geometry_cube3, material_cube3);
+		cube3.position.set(-0.9,1.3,-0.5);
+		cube3.rotateOnAxis( new THREE.Vector3(1,0,0), 32);
+		//scene.add(cube3);
+		
+		//handle
+		var geometry_handle = new THREE.CylinderGeometry( 0.8, 0.8, 0.1, 20 );
+		var material_handle = new THREE.MeshPhongMaterial( {color: 0x00000} );
+		var handle = new THREE.Mesh( geometry_handle, material_handle );
+		handle.position.set(0,1.5,-1.5);
+		handle.rotateOnAxis( new THREE.Vector3(1,0,0), 70);
+		//scene.add( handle );
+		
+		//wheel1
+		var geometry_wheel1 = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+		var material_wheel1 = new THREE.MeshPhongMaterial( {color: 0x0E0E0E} );
+		var wheel1 = new THREE.Mesh( geometry_wheel1, material_wheel1 );
+		wheel1.position.set(-1.25,-0.2,-1.25);
+		wheel1.rotation.z = 1.565;
+
+		//wheel2
+		var geometry_wheel2 = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+		var material_wheel2 = new THREE.MeshPhongMaterial( {color: 0x0E0E0E} );
+		var wheel2 = new THREE.Mesh( geometry_wheel2, material_wheel2 );
+		wheel2.position.set(1.25,-0.2,-1.25);
+		wheel2.rotation.z = 1.565;
+		
+		//wheel3
+		var geometry_wheel3 = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+		var material_wheel3 = new THREE.MeshPhongMaterial( {color: 0x0E0E0E} );
+		var wheel3 = new THREE.Mesh( geometry_wheel3, material_wheel3 );
+		wheel3.position.set(-1.25,-0.2,1.25);
+		wheel3.rotation.z = 1.565;
+
+		//wheel4
+		var geometry_wheel4 = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+		var material_wheel4 = new THREE.MeshPhongMaterial( {color: 0x0E0E0E} );
+		var wheel4 = new THREE.Mesh( geometry_wheel4, material_wheel4 );
+		wheel4.position.set(1.25,-0.2,1.25);
+		wheel4.rotation.z = 1.565;
+		
+    var material_body = new THREE.MeshPhongMaterial();
+    material_body.color=  new THREE.Color(1,0,0.5);
+    var geometry_body = new THREE.BoxGeometry(3,1.2,4);
+    var body = new THREE.Mesh(geometry_body,material_body);
+		body.position.set(0,0.5,0);
+		//scene.add(body);
+		
+		//group
+		var group = new THREE.Group();
+		group.add( cylinder1 );
+		group.add( cylinder2 );
+		group.add( cube1 );
+		group.add( cube2 );
+		group.add( cube3 );		
+		group.add( handle );
+		group.add( wheel1 );
+		group.add( wheel2 );
+		group.add( wheel3 );
+		group.add( wheel4 );
+		group.add( body );
+		
+		//scene.add(group);
+		
+
+		
+	var MovingCubeMat = new THREE.MeshBasicMaterial();
+	MovingCubeMat.color = new THREE.Color(1,0,1);
+	var MovingCubeGeom = new THREE.CubeGeometry( 1, 1, 1);
+	var MovingCube = new THREE.Mesh( MovingCubeGeom, MovingCubeMat );
+	MovingCube.position.set(0, 0, 0);
+	//scene.add( MovingCube );	
+	
+	//var group = new THREE.Group();
+	//createModel();
+	
+		var camera_flag = 1;
+		var moveForward=false;
+    var moveLeft=false;
+    var moveBackward=false;
+    var moveRight=false;
+
+    //final update loop
+
+    const clock = new THREE.Clock();
+
+    var speed=2;
+    var angle=0;
+    var MyUpdateLoop = function ( )
+    {
+      var delta = clock.getDelta(); // seconds.
+			var moveDistance = 5 * delta; // 200 pixels per second
+			var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
+			var rotation_matrix = new THREE.Matrix4().identity();
+      if (moveLeft==true)
+      {
+        //angle+=speed*delta;
+        //Dir.x=Math.sin(rotateAngle);
+        //Dir.z=Math.cos(rotateAngle);
+        //Dir.normalize();
+        group.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
+        
+      }
+      if (moveRight==true)
+      {
+        //angle-=speed*delta;
+        //Dir.x=Math.sin(rotateAngle);
+        //Dir.z=Math.cos(rotateAngle);
+        //Dir.normalize();
+        group.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
+      }
+      if (moveForward==true)
+      {
+        //Pos.x+=Dir.x*speed*delta;
+        //Pos.z+=Dir.z*speed*delta;
+        group.translateZ( -moveDistance );
+      }
+      if (moveBackward==true)
+      {
+        //Pos.x-=Dir.x*speed*delta;
+        //Pos.z-=Dir.z*speed*delta;
+        group.translateZ(  moveDistance );
+      }
+      //recompute direction
+      var relativeCameraOffset = new THREE.Vector3(0,2,10);
+
+			var cameraOffset = relativeCameraOffset.applyMatrix4( group.matrixWorld );
+
+			camera2.position.x = relativeCameraOffset.x;
+			camera2.position.y = relativeCameraOffset.y;
+			camera2.position.z = relativeCameraOffset.z;
+			camera2.lookAt( group.position );
+			camera2.updateProjectionMatrix();
+      //call the render with the scene and the camera
+      
+      if( camera_flag<0) {
+      	//scene.add( MovingCube );
+      	//scene.add(group);
+      	renderer.render(scene,camera2);
+      	showVariable.innerHTML = "flag at 2 : " + camera_flag + ", " + moveForward;
+      	
+    } else {
+    	renderer.render(scene,camera);
+   		showVariable.innerHTML = "flag at 1 : " + camera_flag + ", " + moveForward;
+    		
+    }
+      //finally perform a recoursive call to update again
+      //this must be called because the mouse change the camera position
+      //camera.rotation.x=0;
+      //update the projection matrix given the new values
+      //camera.updateProjectionMatrix();
+
+      //camera2.position.set(Pos.x,Pos.y,Pos.z);
+      //camera2.lookAt(Pos.x+Dir.x,Pos.y+Dir.y,Pos.z+Dir.z);
+      //camera2.updateProjectionMatrix();
+      
+      colorChanger.SetColor();
+      requestAnimationFrame(MyUpdateLoop);
+
+    };
+    
+    var onKeyDown = function ( event ) {
+
+      switch ( event.keyCode ) {
+
+
+        case 73: // i
+          moveForward = true;
+          break;
+
+        case 74: // j
+          moveLeft = true;
+          wheel1.rotation.x = 1.5;
+          wheel2.rotation.x = 1.5;
+          wheel3.rotation.x = 1.5;
+          wheel4.rotation.x = 1.5;
+ 	    	  //wheel2.rotateOnAxis( new THREE.Vector3(1,0,0), 1.5);
+  	      //wheel3.rotateOnAxis( new THREE.Vector3(1,0,0), 1.5);
+    	    //wheel4.rotateOnAxis( new THREE.Vector3(1,0,0), 1.5);
+          break;
+
+        case 75: // k
+          moveBackward = true;
+          break;
+
+        case 76: // l
+          moveRight = true;
+          break;
+
+      }
+
+    };
+
+    var onKeyUp = function ( event ) {
+
+      switch( event.keyCode ) {
+
+        case 73: // i
+          moveForward = false;
+          break;
+
+        case 74: // j
+          moveLeft = false;
+          wheel1.rotation.x = -1.5;
+          wheel2.rotation.x = -1.5;
+          wheel3.rotation.x = -1.5;
+          wheel4.rotation.x = -1.5;
+          break;
+
+        case 75: // k
+          moveBackward = false;
+          break;
+
+        case 76: // l
+          moveRight = false;
+          break;
+
+      }
+    };
+    
+        
+    document.addEventListener( 'keydown', onKeyDown, false );
+    document.addEventListener( 'keyup', onKeyUp, false );
+    
+        // Update box color
+        var Color = function () {
+            this.color = 0xee6666; // RGB with alpha
+
+            // Define render logic ...
+            box.material.color.setHex(this.color);
+
+            this.SetColor = function(){
+                box.material.color.setHex(this.color);
+            }
+        };
+
+    function saveAsImage() {
+        var imgData, imgNode;
+
+        try {
+            var strMime = "image/jpeg";
+            imgData = renderer.domElement.toDataURL(strMime);
+						saveFile(imgData.replace(strMime, strDownloadMime), "test.jpg");
+						
+						       
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
+    };
+
+    var saveFile = function (strData, filename) {
+    		
+        var link = document.createElement('a');
+        if (typeof link.download === 'string') {
+        		
+        		
+        		if (typeof window.navigator.msSaveBlob !== 'undefined') { // IE
+                //var blob = new Blob([blob], { type: 'application/pdf' });
+                //window.navigator.msSaveBlob(blob, filename);
+                //var html="<img src='"+strData+"' alt='canvas image'/>";
+		        		//var newTab=window.open();
+		        		//newTab.document.write(html);
+		        		
+		        		// convert base64 to raw binary data held in a string
+						    var byteString = atob(strData.split(',')[1]);
+
+						    // separate out the mime component
+						    var mimeString = strData.split(',')[0].split(':')[1].split(';')[0];
+
+						    // write the bytes of the string to an ArrayBuffer
+						    var arrayBuffer = new ArrayBuffer(byteString.length);
+						    var _ia = new Uint8Array(arrayBuffer);
+						    for (var i = 0; i < byteString.length; i++) {
+						        _ia[i] = byteString.charCodeAt(i);
+						    }
+
+						    var dataView = new DataView(arrayBuffer);
+						    var blob = new Blob([dataView], { type: mimeString });
+						    
+						    window.navigator.msSaveBlob(blob, filename);
+						    
+            } else {//if (typeof window.chrome !== 'undefined') { // Chrome
+		            document.body.appendChild(link); //Firefox requires the link to be in the body
+		            link.download = filename;
+		            link.href = strData;
+		            link.click();
+		            document.body.removeChild(link); //remove the link when done
+            
+		      }
+        } else {
+            location.replace(uri);
+        }
+
+    };
+		
+		function createModel(){
+		
+		}
+
+
+        var colorChanger = new Color();
+
+        gui.addColor(colorChanger, 'color');
+
+
+
+
+
+        // Environment light
+        //var ambientLight = getAmbientLight(0.3);
+        //scene.add(ambientLight);
+
+       /* var pointLight = getPointLight(1);
+        scene.add(pointLight);
+        */
+        var saveLink = document.createElement('div');
+
+        //gui.add(pointLight, 'intensity', 0.5, 5);
+        //gui.add(pointLight.position, 'y', 10, 30);
+        //gui.add(pointLight.position, 'x', -30, 30);
+        //gui.add(pointLight.position, 'z', -30, 30);
+
+
+
+
+        //////////////
+        // CONTROLS //
+        //////////////
+
+        // move mouse and: left   click to rotate,
+        //                 middle click to zoom,
+        //                 right  click to pan
+        // add the new control and link to the current camera to transform its position
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+/*
+				var MyUpdateLoop = function () {
+            //call the render with the scene and the camera
+            renderer.render(scene, camera);
+            // Update the stats to monitor.
+            stats.update();
+
+            colorChanger.SetColor();
+
+            //finally perform a recursive call to update again
+            //this must be called because the mouse change the camera position
+            requestAnimationFrame(MyUpdateLoop);
+        };
+*/
+        requestAnimationFrame(MyUpdateLoop);
+        
+				 //this fucntion is called when the window is resized
+    var MyResize = function ( )
+    {
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+      renderer.setSize(width,height);
+      camera.aspect = width/height;
+      camera.updateProjectionMatrix();
+      camera2.aspect = width/height;
+      camera2.updateProjectionMatrix();
+      renderer.render(scene,camera);
+    };
+
+    //link the resize of the window to the update of the camera
+    window.addEventListener( 'resize', MyResize);
+    </script>
+
+
+</html>
+
+
+
+
+
+
+
+
