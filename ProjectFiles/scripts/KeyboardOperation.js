@@ -328,6 +328,27 @@ function setButtonEvents() {
 
         console.log("button clicked!");
     });
+	
+	//Change to camera2 for adventure mode.
+	$("#adventure").mousedown(function () {
+		camera_flag *= -1;
+					
+				if (camera_flag < 0){
+					scene.add(group);
+					scene.add(camera2);
+					//scene.remove(camera);
+				} 
+				if (camera_flag > 0) {
+					scene.remove(group);
+					scene.remove(camera2);
+					scene.add(camera);
+				}
+	});
+	
+	//Screen Shot
+	$("#screenshot").mousedown(function () {
+		saveAsImage();
+	});
 }
 
 // Load previous building from a file. Finish the function of loading the selected file dynamically later.
@@ -456,3 +477,78 @@ var clickToMoveControlStep = 0;
 document.addEventListener('mousedown', onDocumentMouseDown, false);
 
 
+//coudn't merge in the original key event function. An error occured..
+var onKeyDown = function ( event ) {
+
+      switch ( event.keyCode ) {
+
+
+        case 73: // i
+          moveForward = true;
+          material_back.color=  new THREE.Color(0.5,0,0);
+          //backlight1.intensity = 0;
+          //backlight2.intensity = 0;
+          break;
+
+        case 74: // j
+          moveLeft = true;
+          material_back.color=  new THREE.Color(0.5,0,0);
+          //backlight1.intensity = 0;
+          //backlight2.intensity = 0;
+          break;
+
+        case 75: // k
+          moveBackward = true;
+          material_back.color=  new THREE.Color(0.5,0,0);
+          //backlight1.intensity = 0;
+          //backlight2.intensity = 0;
+          break;
+
+        case 76: // l
+          moveRight = true;
+          material_back.color=  new THREE.Color(0.5,0,0);
+          //backlight1.intensity = 0;
+          //backlight2.intensity = 0;
+          break;
+
+      }
+
+    };
+
+    var onKeyUp = function ( event ) {
+
+      switch( event.keyCode ) {
+
+        case 73: // i
+          moveForward = false;
+          material_back.color=  new THREE.Color(1,0,0);
+          //backlight1.intensity = 0.2;
+          //backlight2.intensity = 0.2;
+          break;
+
+        case 74: // j
+          moveLeft = false;
+          material_back.color=  new THREE.Color(1,0,0);
+          //backlight1.intensity = 0.2;
+          //backlight2.intensity = 0.2;
+          break;
+
+        case 75: // k
+          moveBackward = false;
+          material_back.color=  new THREE.Color(1,0,0);
+          //backlight1.intensity = 0.2;
+          //backlight2.intensity = 0.2;
+          break;
+
+        case 76: // l
+          moveRight = false;
+          material_back.color=  new THREE.Color(1,0,0);
+          //backlight1.intensity = 0.2;
+          //backlight2.intensity = 0.2;
+          break;
+
+      }
+    };
+	
+    window.addEventListener( 'keydown', onKeyDown, false ); 
+	window.addEventListener( 'keyup', onKeyUp, false );

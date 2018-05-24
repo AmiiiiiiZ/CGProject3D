@@ -131,3 +131,67 @@ function getBlock(color) {
 }
 
 
+
+function saveAsImage() {
+        var imgData, imgNode;
+
+        try {
+			var strDownloadMime = "image/octet-stream";
+            var strMime = "image/jpeg";
+            imgData = renderer.domElement.toDataURL(strMime);
+			saveFile(imgData.replace(strMime, strDownloadMime), "screenshot.jpg");
+			//console.log(imgData);
+			
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
+};
+
+var saveFile = function (strData, filename) {
+    		
+        var link = document.createElement('a');
+        if (typeof link.download === 'string') {
+        	//var html="<img src='"+strData+"' alt='canvas image'/>";
+		    //var newTab=window.open();
+		    //newTab.document.write(html);
+        		
+        		if (typeof window.navigator.msSaveBlob !== 'undefined') { // IE
+                //var blob = new Blob([blob], { type: 'application/pdf' });
+                //window.navigator.msSaveBlob(blob, filename);
+                //var html="<img src='"+strData+"' alt='canvas image'/>";
+		        		//var newTab=window.open();
+		        		//newTab.document.write(html);
+		        		
+		        		// convert base64 to raw binary data held in a string
+						    var byteString = atob(strData.split(',')[1]);
+
+						    // separate out the mime component
+						    var mimeString = strData.split(',')[0].split(':')[1].split(';')[0];
+
+						    // write the bytes of the string to an ArrayBuffer
+						    var arrayBuffer = new ArrayBuffer(byteString.length);
+						    var _ia = new Uint8Array(arrayBuffer);
+						    for (var i = 0; i < byteString.length; i++) {
+						        _ia[i] = byteString.charCodeAt(i);
+						    }
+
+						    var dataView = new DataView(arrayBuffer);
+						    var blob = new Blob([dataView], { type: mimeString });
+						    
+						    window.navigator.msSaveBlob(blob, filename);
+						    
+            } else {//if (typeof window.chrome !== 'undefined') { // Chrome
+					document.body.appendChild(link); //Firefox requires the link to be in the body
+		            link.download = filename;
+					//console.log("what:"+strData);
+		            link.href = strData;
+		            link.click();
+		            document.body.removeChild(link); //remove the link when done
+		      }
+        } else {
+            location.replace(uri);
+        }
+
+};

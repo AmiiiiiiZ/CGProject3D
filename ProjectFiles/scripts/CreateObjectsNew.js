@@ -178,3 +178,118 @@ function getAmbientLight(intensity) {
 
     return light;
 }
+
+
+// Create a car
+function getCar() {
+		//cylinder1
+		var geometry_cylinder1 = new THREE.CylinderGeometry( 0.5, 0.5, 0.7, 20 );
+		var material_cylinder1 = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+		var cylinder1 = new THREE.Mesh( geometry_cylinder1, material_cylinder1 );
+		cylinder1.position.set(0,2.5,0);
+		
+		//cylinder2
+		var geometry_cylinder2 = new THREE.CylinderGeometry( 0.25, 0.25, 1, 20 );
+		var material_cylinder2 = new THREE.MeshPhongMaterial( {color: 0xffff00} );
+		var cylinder2 = new THREE.Mesh( geometry_cylinder2, material_cylinder2 );
+		cylinder2.position.set(0,2.5,0);
+
+		//cube1
+		var geometry_cube1 = new THREE.BoxGeometry(1.4,1.5,0.9);
+		var material_cube1 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+		//material_cube1.color=  new THREE.Color(1,0,1);
+		var cube1 = new THREE.Mesh(geometry_cube1, material_cube1);
+		cube1.position.set(0,1.25,0);
+
+		//cube2 (right-arm)
+		var geometry_cube2 = new THREE.BoxGeometry(0.4,1.4,0.5);
+		var material_cube2 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+		var cube2 = new THREE.Mesh(geometry_cube2, material_cube2);
+		cube2.position.set(0.9,1.3,-0.5);
+		cube2.rotateOnAxis( new THREE.Vector3(1,0,0), 32);
+		
+		//cube3 (left-arm)
+		var geometry_cube3 = new THREE.BoxGeometry(0.4,1.35,0.5);
+		var material_cube3 = new THREE.MeshPhongMaterial( {color: 0xffffff});
+		var cube3 = new THREE.Mesh(geometry_cube3, material_cube3);
+		cube3.position.set(-0.9,1.3,-0.5);
+		cube3.rotateOnAxis( new THREE.Vector3(1,0,0), 32);
+		
+		//handle
+		var geometry_handle = new THREE.CylinderGeometry( 0.9, 0.9, 0.1, 20 );
+		var material_handle = new THREE.MeshPhongMaterial( {color: 0x00000} );
+		var handle = new THREE.Mesh( geometry_handle, material_handle );
+		handle.position.set(0,1.5,-1.5);
+		handle.rotateOnAxis( new THREE.Vector3(1,0,0), 70);
+		
+		//body
+		var material_body = new THREE.MeshPhongMaterial();
+		material_body.color=  new THREE.Color(0.05,0.05,0.3);
+		var geometry_body = new THREE.BoxGeometry(2.8,1,4);
+		var body = new THREE.Mesh(geometry_body,material_body);
+		body.position.set(0,0.5,0);
+		
+		//body2
+		var material_body2 = new THREE.MeshPhongMaterial();
+		material_body2.color=  new THREE.Color(0.05,0.05,0.3);
+		var geometry_body2 = new THREE.BoxGeometry(1.8,0.8,1);
+		var body2 = new THREE.Mesh(geometry_body2,material_body2);
+		body2.position.set(0,0.8,1);
+		
+		//body3
+		var material_body3 = new THREE.MeshPhongMaterial();
+		material_body3.color=  new THREE.Color(0.05,0.05,0.3);
+		var geometry_body3 = new THREE.BoxGeometry(2.8,0.4,4);
+		var body3 = new THREE.Mesh(geometry_body3,material_body3);
+		body3.position.set(0,0.15,0.1);
+		
+		var headlight = getPointLight();
+		headlight.position.set(0,1,-1.75);
+		headlight.color.set(new THREE.Color(1,1,1));
+		headlight.intensity = 0.3;
+		
+		//group
+		var group = new THREE.Group();
+		group.add( cylinder1 );
+		group.add( cylinder2 );
+		group.add( cube1 );
+		group.add( cube2 );
+		group.add( cube3 );		
+		group.add( handle );
+		group.add( body );
+		group.add( body2 );
+		group.add( body3 );
+		group.add( headlight );
+		body.castShadow = true;
+		cylinder1.castShadow = true;
+		cylinder2.castShadow = true;
+		cube1.castShadow = true;
+		cube2.castShadow = true;
+		cube3.castShadow = true;
+		handle.castShadow = true;
+		
+		
+		return group;
+}
+// Create a car
+function getWheel(x,y,z) {
+	
+	var texture_wheel = new THREE.TextureLoader().load('img/tire.png');
+	var geometry_wheel = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+	var material_wheel = new THREE.MeshPhongMaterial( {map:texture_wheel} );
+	var wheel = new THREE.Mesh( geometry_wheel, material_wheel );
+	wheel.position.set(x,y,z);
+	wheel.rotation.z = 1.565;
+		
+	return wheel;
+}
+
+function getBackLight(x,y,z) {
+	
+	var backlight = getPointLight();
+	backlight.position.set(x,y,z);
+	backlight.color.set(new THREE.Color(1,0,0));
+	backlight.intensity = 0.2;
+	
+	return backlight;
+}
