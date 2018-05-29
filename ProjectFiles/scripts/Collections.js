@@ -14,8 +14,11 @@ function useMaterial(color, collection, transparency) {
     }
     else {
         // When the color is new 
-        material = new THREE.MeshPhongMaterial({ transparent: transparency, opacity: 0.5 });
-        material.color.setHex(color);
+        material = new THREE.MeshLambertMaterial({
+            color: color
+        });
+        material.map = loader.load('img/text1.png');
+
         collection[color] = material;
         console.log("new material created!");
     }

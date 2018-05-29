@@ -17,10 +17,7 @@ var MyResize = function ( )
     renderer.setSize(width, height);
     //and update the aspect ratio of the camera
     camera.aspect = width / height;
-    //update the projection matrix given the new values
-    camera.updateProjectionMatrix();
-    //and finally render the scene again
-    renderer.render(scene, camera);
+    camera2.aspect = width / height;
 };
 //link the resize event of the window to the update method of the renderer.
 window.addEventListener( 'resize', MyResize);
