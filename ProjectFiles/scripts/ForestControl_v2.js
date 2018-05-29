@@ -61,76 +61,65 @@
 
 function GenerateRandomModels(object,material,quantity)
 {
+
   var counter = 0;
-  var protection = 0;
-  //while (counter < quantity){
-  for (var i = 0; i < quantity; i++) {
-// Model/material loading!
+  while (counter < quantity) {
+  //for (var i = 0; i < quantity; i++) {
 
+    var mtlLoader = new THREE.MTLLoader();
+      mtlLoader.load(material, function(materials){
 
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
 
-  var mtlLoader = new THREE.MTLLoader();
-  mtlLoader.load(material, function(materials){
+        objLoader.load(object, function(mesh){
 
-    materials.preload();
-    var objLoader = new THREE.OBJLoader();
-    objLoader.setMaterials(materials);
+          mesh.traverse(function(child){
+            if( child instanceof THREE.Mesh ){
 
-    objLoader.load(object, function(mesh){
+              child.castShadow = true;
+              child.receiveShadow = true;
+              child.geometry.computeVertexNormals();
+              child.position.x = Math.random() * 300 - 150 ;
+              child.position.z = Math.random() * 300 - 150 ;
+              child.position.y -= 0.5;
 
-      mesh.traverse(function(child){
-        if( child instanceof THREE.Mesh ){
+              if ((child.position.x < 50) && (child.position.x > -50)) {
+                  if ((child.position.z > 50) || (child.position.z < -50)) {
+                      scene.add(mesh);
+                  } 
 
-          child.castShadow = true;
-          child.receiveShadow = true;
-          child.geometry.computeVertexNormals();
+              } else if ((child.position.z < 50) && (child.position.z > -50)) {
+                  if ((child.position.x > 50) || (child.position.x < -50)) {
+                      scene.add(mesh);
+                  } 
 
-
-              while ((child.position.x < 50) || (child.position.x > -50)) {
-                child.position.x = Math.random() * 300 - 150 ;
-                protection++;
-
-                if (protection > 500) {
-                    break;
+              } else {
+                  scene.add(mesh);
               }
             }
-              
-              while ((child.position.z < 50) || (child.position.z > -50)) {
-                child.position.z = Math.random() * 300 - 150 ;
-                protection++;
-
-                if (protection > 500) {
-                    break;
-              }
-            }
-          }
-          
-          child.position.y -= 0.5;
-
-          if ((child.position.x > 50) || (child.position.x < -50)) {
-              if ((child.position.x > 50) || (child.position.x < -50)) {
-                scene.add(mesh);
-              } 
-          }
-          
-          console.log(protection);
-
+          });
+        });
       });
-    });
-  });
 
+      counter++;
   }
-
-
-  
-//}
 }
 
 
-        GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 50);
-        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 30);
-        GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 35);
-        GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 25);
-        GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 30);
+        GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 30);
+        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
+        GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 45);
+        GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 35);
+        GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
+
+        // function AddFog() {
+              
+        //       fogColor = new THREE.Color(0xffffff);
+        //       scene.background = fogColor;
+        //       scene.fog = new THREE.Fog(fogColor, 0.0025, 20);
+        // }
+
 

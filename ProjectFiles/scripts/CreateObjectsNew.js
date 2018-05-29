@@ -61,8 +61,17 @@ function getPlane(size) {
     // The last two params are segments(vertices).
     var geometry = new THREE.PlaneGeometry(size, size,size,size);
 
+    var loader = new THREE.TextureLoader();
+
+    var texture = loader.load('img/grass.png', function(texture) {
+    	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    	texture.offset.set(0,0);
+    	texture.repeat.set(30,30);
+    });
+
     var material = new THREE.MeshPhongMaterial({
-        color: 0xffeeee,
+        //color: 0xffeeee,
+        map: texture,
         side: THREE.DoubleSide
     });
 

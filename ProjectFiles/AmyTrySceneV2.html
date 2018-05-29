@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -125,7 +125,7 @@
     <script src="scripts/CreateObjectsNew.js"></script>
     <script src="scripts/Collections.js"></script>
     <script src="scripts/ObjectsCreation.js"></script>
-    <script src="scripts/ForestControl.js"></script>
+    <script src="scripts/ForestControl_v2.js"></script>
 
     <!-- This script section stores the functions about controlling the box with your keyboard. -->
     <script src="scripts/KeyboardOperation.js"></script>
@@ -151,6 +151,9 @@
         ground.name = 'ground';
         scene.add(ground);
 
+        // var fogColor = new THREE.Color(0xffffff);
+        // scene.fog = new THREE.FogExp2(fogColor, 0.01);
+
         // Used to update block color
         var Color = function (object) {
             this.color = 0xee6666; // RGB with alpha
@@ -172,13 +175,6 @@
         colorChanger = new Color(box);
 
         gui.addColor(colorChanger, 'color');
-
-        GenerateRandomModels("../models/nature/tree_plateau.obj", "../models/nature/tree_plateau.mtl", 30);
-        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 20);
-        GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 50);
-        GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 10);
-        GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 70);
-        GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 100);
 
 
 

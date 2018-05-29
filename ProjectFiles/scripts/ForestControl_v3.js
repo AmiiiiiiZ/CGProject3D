@@ -63,8 +63,8 @@ function GenerateRandomModels(object,material,quantity)
 {
   var counter = 0;
   var protection = 0;
-  //while (counter < quantity){
-  for (var i = 0; i < quantity; i++) {
+  while (counter < quantity){
+
 // Model/material loading!
 
 
@@ -84,41 +84,17 @@ function GenerateRandomModels(object,material,quantity)
           child.castShadow = true;
           child.receiveShadow = true;
           child.geometry.computeVertexNormals();
-
-
-              while ((child.position.x < 50) || (child.position.x > -50)) {
-                child.position.x = Math.random() * 300 - 150 ;
-                protection++;
-
-                if (protection > 500) {
-                    break;
-              }
-            }
-              
-              while ((child.position.z < 50) || (child.position.z > -50)) {
-                child.position.z = Math.random() * 300 - 150 ;
-                protection++;
-
-                if (protection > 500) {
-                    break;
-              }
-            }
-          }
-          
+          child.position.x = Math.random() * 300 - 150 ;
+          child.position.z = Math.random() * 300 - 150 ;
           child.position.y -= 0.5;
+          scene.add(mesh);
+          counter++;
 
-          if ((child.position.x > 50) || (child.position.x < -50)) {
-              if ((child.position.x > 50) || (child.position.x < -50)) {
-                scene.add(mesh);
-              } 
-          }
-          
-          console.log(protection);
-
+      }   
       });
     });
   });
-
+  console.log(counter);
   }
 
 
@@ -128,9 +104,9 @@ function GenerateRandomModels(object,material,quantity)
 
 
         GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 50);
-        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 30);
-        GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 35);
-        GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 25);
-        GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 30);
-        GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
+        // GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 30);
+        // GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 35);
+        // GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 25);
+        // GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 30);
+        // GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
 
