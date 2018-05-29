@@ -27,7 +27,7 @@ canvas {
 #controls {
     position: absolute;
     text-align: center;
-    top: 100px;
+    top: 50px;
     color: #0f0;
     border: solid 1px #0f0;
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿OCTYPE html>
 
 <html>
 <head>
@@ -33,7 +33,7 @@
     <!-- This div element is the top text space on the page. -->
     <div id="info">
         <p>
-            This is a Grid test experimented by Amy. Click your mouse to start moving the box!
+            Click your mouse to start moving the box!
             <br />
             left   click to rotate, middle click to zoom,  right  click to pan
 
@@ -81,8 +81,8 @@
 		<br/>
 		
 		<button id="adventure">Start Adventure!</button>
-		<p style="color:black; font-size:10px">Forward(i),Backward(k),Left(j),Right(l)</p>
-		<button id="screenshot">Screet Shot</button>
+		<p>Move Car: <br />Forward(i),Backward(k),<br />Left(j),Right(l)</p>
+		<button id="screenshot">Screen Shot</button>
         <br />
 
 
@@ -110,7 +110,7 @@
 		
 		////////////////////////add an additional camera for adventure/////////////////////////
 		var camera2 = new THREE.PerspectiveCamera(45,ratio,1,1000);
-			camera2.position.set(0,2,5);
+			camera2.position.set(0,8,5);
 			camera2.lookAt(scene.position);	
 		///////////////////////////////////////////////////////////////////////////////////////
         
@@ -137,15 +137,19 @@
 
         // Use the clock to calculate time elapse.
         var clock = new THREE.Clock();
-		const clock2 = new THREE.Clock();
-		
+        const clock2 = new THREE.Clock();
+
         // Change the color of the background to grey.
         renderer.setClearColor(0x555555);
 
 
-        // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
+        // Make texture for objects.
+        var loader = new THREE.TextureLoader();
 
         var ground = getPlane(301);
+
+        // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
+
         ground.position.y = -0.50;
         ground.material.color.setHex(0x88aa88);
         ground.name = 'ground';
@@ -167,10 +171,12 @@
         };
 
         var box = getBox(0x000000);
-        box.material = new THREE.MeshPhongMaterial();
+        box.material = new THREE.MeshLambertMaterial();
+        box.material.map = loader.load('img/text1.png');
         box.name = 'control';
 
         scene.add(box);
+
 
         colorChanger = new Color(box);
 
@@ -255,9 +261,9 @@
 		var moveLeft=false;
 		var moveBackward=false;
 		var moveRight=false;
-		
-
 		//////////////////////////////////////////////////////////
+
+
 
 
         //////////////
@@ -274,28 +280,29 @@
 		
         // Constantly update the renderer/scene.
         var MyUpdateLoop = function () {
-            //call the render with the scene and the camera
-		
-		
+
 			//render according to a camera flag.
 			//renderer.render(scene, camera);
 			if(camera_flag<0) {
 				renderer.render(scene,camera2);
 			} else {
 				renderer.render(scene,camera);
-			}
+            }
+
             // Update the stats to monitor.
             stats.update();
 
+            // Update the color of the control box
             colorChanger.SetColor();
 
             // Calculate time elapsed with the clock.
             var timeElapsed = clock.getElapsedTime();
 
+            // Update the position of the pointer(which was a ball, but now a cone) of the control box
             ball.position.y = box.position.y + 2 + Math.sin(timeElapsed * 2) / 2;
             ball.rotation.y -= 0.05;
 			
-		//Car Animation
+		// Car Animation
 		var delta = clock2.getDelta(); // seconds.
 		var moveDistance = 5 * delta; // 200 pixels per second
 		var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
@@ -305,36 +312,35 @@
 		{
 			group.rotateOnAxis( new THREE.Vector3(0,1,0), rotateAngle);
 		}
-		  if (moveRight==true)
-		  {
+		if (moveRight==true)
+		{
 			group.rotateOnAxis( new THREE.Vector3(0,1,0), -rotateAngle);
-		  }
-		  if (moveForward==true)
-		  {
+		}
+		if (moveForward==true)
+		{
 			group.translateZ( -moveDistance );
 			wheel1.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
 			wheel2.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
 			wheel3.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
 			wheel4.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
 			 
-		  }
-		  if (moveBackward==true)
-		  {
+		}
+		if (moveBackward==true)
+		{
 			group.translateZ(  moveDistance );
 			wheel1.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
 			wheel2.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
 			wheel3.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
 			wheel4.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
-		  }
-		var relativeCameraOffset = new THREE.Vector3(0,2,10);
+		}
+		var relativeCameraOffset = new THREE.Vector3(0,5,13);
 		var cameraOffset = relativeCameraOffset.applyMatrix4( group.matrixWorld );
 
-			camera2.position.x = relativeCameraOffset.x;
-			camera2.position.y = relativeCameraOffset.y;
-			camera2.position.z = relativeCameraOffset.z;
-			camera2.lookAt( group.position );
-			
-		//call the render with the scene and the camera
+        // Update camera position.
+		camera2.position.x = relativeCameraOffset.x;
+		camera2.position.y = relativeCameraOffset.y;
+		camera2.position.z = relativeCameraOffset.z;
+		camera2.lookAt( group.position );
       
 		camera.updateProjectionMatrix();
 		camera2.updateProjectionMatrix();
@@ -347,17 +353,6 @@
 
         requestAnimationFrame(MyUpdateLoop);
 		
-	var MyResize = function ( )
-    {
-      var width = window.innerWidth;
-      var height = window.innerHeight;
-      renderer.setSize(width,height);
-      camera.aspect = width/height;
-      camera.updateProjectionMatrix();
-      camera2.aspect = width/height;
-      camera2.updateProjectionMatrix();
-    };
-	window.addEventListener( 'resize', MyResize);
 	
     </script>
 

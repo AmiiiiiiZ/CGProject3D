@@ -88,7 +88,38 @@ function keyDown(event){
 
     }
 
+    switch (event.keyCode) {
 
+
+        case 73: // i
+            moveForward = true;
+            material_back.color = new THREE.Color(0.5, 0, 0);
+            //backlight1.intensity = 0;
+            //backlight2.intensity = 0;
+            break;
+
+        case 74: // j
+            moveLeft = true;
+            material_back.color = new THREE.Color(0.5, 0, 0);
+            //backlight1.intensity = 0;
+            //backlight2.intensity = 0;
+            break;
+
+        case 75: // k
+            moveBackward = true;
+            material_back.color = new THREE.Color(0.5, 0, 0);
+            //backlight1.intensity = 0;
+            //backlight2.intensity = 0;
+            break;
+
+        case 76: // l
+            moveRight = true;
+            material_back.color = new THREE.Color(0.5, 0, 0);
+            //backlight1.intensity = 0;
+            //backlight2.intensity = 0;
+            break;
+
+    }
 }
 
 // Do this when key up
@@ -341,7 +372,7 @@ function setButtonEvents() {
 				if (camera_flag > 0) {
 					scene.remove(group);
 					scene.remove(camera2);
-					scene.add(camera);
+					//scene.add(camera);
 				}
 	});
 	
@@ -387,6 +418,7 @@ var raycaster = new THREE.Raycaster();
 var selectedObj = false;
 var previousObj = null;
 
+// Switch to the mode of using mouse to set the box at the pointed position.
 function onDocumentMouseDown(event) {
 
     var mouse = new THREE.Vector2;
@@ -480,38 +512,7 @@ document.addEventListener('mousedown', onDocumentMouseDown, false);
 //coudn't merge in the original key event function. An error occured..
 var onKeyDown = function ( event ) {
 
-      switch ( event.keyCode ) {
-
-
-        case 73: // i
-          moveForward = true;
-          material_back.color=  new THREE.Color(0.5,0,0);
-          //backlight1.intensity = 0;
-          //backlight2.intensity = 0;
-          break;
-
-        case 74: // j
-          moveLeft = true;
-          material_back.color=  new THREE.Color(0.5,0,0);
-          //backlight1.intensity = 0;
-          //backlight2.intensity = 0;
-          break;
-
-        case 75: // k
-          moveBackward = true;
-          material_back.color=  new THREE.Color(0.5,0,0);
-          //backlight1.intensity = 0;
-          //backlight2.intensity = 0;
-          break;
-
-        case 76: // l
-          moveRight = true;
-          material_back.color=  new THREE.Color(0.5,0,0);
-          //backlight1.intensity = 0;
-          //backlight2.intensity = 0;
-          break;
-
-      }
+      
 
     };
 
@@ -550,5 +551,4 @@ var onKeyDown = function ( event ) {
       }
     };
 	
-    window.addEventListener( 'keydown', onKeyDown, false ); 
 	window.addEventListener( 'keyup', onKeyUp, false );
