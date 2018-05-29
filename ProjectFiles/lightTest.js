@@ -54,29 +54,28 @@ function initStats() {
 /////////////
 var dirLightControl = new function() {
     this.intensity = 1;
-    this.inclination = 0.5; //倾角 0-180
-    this.azimuth = 0.5; //方位角 0-360
+    this.inclination = 30; //倾角 0-180
+    this.azimuth = 90; //方位角 0-360
 };
 
 var gui = new dat.GUI();
 gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-gui.add(dirLightControl, 'inclination', 0, 0.5, 0.001).onChange(updateSun);
-gui.add(dirLightControl, 'azimuth', 0, 1, 0.001).onChange(updateSun);
+gui.add(dirLightControl, 'inclination', 0, 45, 1).onChange(updateSun);
+gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
 
 /////////////
 /// 调参数 ///
 /////////////
 function updateSun() {
-    //still get some problems but i'll fix it
-    //i think it's because of the trigonometric function
+    //弧度 = 角度 * Math.PI / 180
     var distance = 250;
-  	var theta = Math.PI * ( dirLightControl.inclination - 0.5 );
-  	var phi = 2 * Math.PI * ( dirLightControl.azimuth - 0.5 );
+  	var alpha = dirLightControl.inclination * Math.PI / 180;
+  	var beta = dirLightControl.azimuth * Math.PI / 180;
 
     directionalLight.intensity = dirLightControl.intensity;
-    directionalLight.position.x = distance * Math.cos( phi );
-    directionalLight.position.y = distance * Math.sin( phi ) * Math.sin( theta );
-    directionalLight.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+    directionalLight.position.x = distance * Math.cos( alpha ) * Math.sin( beta );
+    directionalLight.position.y = distance * Math.sin( alpha );
+    directionalLight.position.z = - ( distance * Math.cos( alpha ) * Math.cos( beta ) );
 }
 
 
