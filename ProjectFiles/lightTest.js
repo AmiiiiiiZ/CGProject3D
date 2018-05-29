@@ -1,5 +1,3 @@
-
-
 var scene;
 function initScene() {
     scene = new THREE.Scene();
@@ -48,7 +46,6 @@ function initStats() {
     document.body.appendChild(stats.domElement);
 }
 
-
 /////////////
 // control //
 /////////////
@@ -77,7 +74,6 @@ function updateSun() {
     directionalLight.position.y = distance * Math.sin( alpha );
     directionalLight.position.z = - ( distance * Math.cos( alpha ) * Math.cos( beta ) );
 }
-
 
 /////////////
 /// light ///
@@ -111,8 +107,6 @@ function initLights() {
     scene.add(directionalLight);
     scene.add(directionalLight.target);
 }
-
-
 
 var ground;
 function initGround() {
@@ -179,8 +173,6 @@ function initHelpers() {
     scene.add(dirLightHelper);
   }
 
-
-
 //this function is called when the window is resized
 var MyResize = function() {
     var width = window.innerWidth;
@@ -191,8 +183,6 @@ var MyResize = function() {
     renderer.render(scene,camera);
 };
 window.addEventListener('resize', MyResize);
-
-
 
 function animation() {
     renderer.render(scene, camera);
@@ -215,3 +205,17 @@ function threeStart() {
 }
 
 threeStart();
+
+//skybox
+ var geometry = new THREE.CubeGeometry(800, 800, 800);
+
+ var cubeMaterial = [];
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/front.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/back.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/up.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/down.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/right.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/left.jpg"), side: THREE.DoubleSide} ));
+
+ var skyBox = new THREE.Mesh(geometry, cubeMaterial);
+ scene.add(skyBox);
