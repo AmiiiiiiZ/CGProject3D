@@ -14,7 +14,7 @@ function useMaterial(color, collection, transparency) {
     }
     else {
         // When the color is new 
-        material = new THREE.MeshLambertMaterial({
+        material = new THREE.MeshPhongMaterial({
             color: color
         });
         material.map = loader.load('img/text1.png');

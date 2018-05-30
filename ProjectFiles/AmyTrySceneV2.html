@@ -1,4 +1,4 @@
-﻿OCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -171,7 +171,7 @@
         };
 
         var box = getBox(0x000000);
-        box.material = new THREE.MeshLambertMaterial();
+        box.material = new THREE.MeshPhongMaterial();
         box.material.map = loader.load('img/text1.png');
         box.name = 'control';
 
