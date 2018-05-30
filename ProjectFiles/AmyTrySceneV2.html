@@ -195,23 +195,23 @@
       var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
         scene.add(ambientLight);
 
-        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.2);
-        hemiLight.position.set(0,150,0);
+        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.3);
+        hemiLight.position.set(0,200,0);
         scene.add(hemiLight);
 
         var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
-        directionalLight.position.set(200, 150, 0);
+        directionalLight.position.set(400, 300, 0);
         directionalLight.target.position.set(0, 0, 0);
 
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 512; //阴影映射宽度
-        directionalLight.shadow.mapSize.height = 512; //阴影映射高度
+        directionalLight.shadow.mapSize.width = 1024; //阴影映射宽度
+        directionalLight.shadow.mapSize.height = 1024; //阴影映射高度
         directionalLight.shadow.camera.near = 50; //投影近点，距离光源多近能产生阴影
-        directionalLight.shadow.camera.far = 500; //投影远点，到哪一点为止不再产生阴影
-        directionalLight.shadowCameraLeft = -150;
-        directionalLight.shadowCameraRight = 150;
-        directionalLight.shadowCameraTop = 150;
-        directionalLight.shadowCameraBottom = -150;
+        directionalLight.shadow.camera.far = 1000; //投影远点，到哪一点为止不再产生阴影
+        directionalLight.shadowCameraLeft = -300;
+        directionalLight.shadowCameraRight = 300;
+        directionalLight.shadowCameraTop = 300;
+        directionalLight.shadowCameraBottom = -300;
 
         scene.add(directionalLight);
         scene.add(directionalLight.target);
@@ -227,7 +227,7 @@
 
     var gui = new dat.GUI();
     gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-    gui.add(dirLightControl, 'inclination', 20, 60, 1).onChange(updateSun);
+    gui.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
     gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
 
     /////////////
