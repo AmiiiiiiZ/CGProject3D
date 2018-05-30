@@ -97,7 +97,7 @@
         document.body.appendChild(stats.dom);
 
         // Create interaction control panel.
-        var gui = new dat.GUI();
+     //   var gui = new dat.GUI();
 
         var ratio = window.innerWidth / window.innerHeight;
         var camera = new THREE.PerspectiveCamera(45, ratio, 1, 1000);
@@ -180,7 +180,7 @@
 
         colorChanger = new Color(box);
 
-        gui.addColor(colorChanger, 'color');
+    //    gui.addColor(colorChanger, 'color');
 
 
 
@@ -189,18 +189,65 @@
         scene.add(bone);
 
 
-        // Environment light
-        var ambientLight = getAmbientLight(3);
+  /////////////
+    /// light ///
+    /////////////
+      var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
         scene.add(ambientLight);
 
-        var pointLight = getPointLight(1);
-        scene.add(pointLight);
+        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.2);
+        hemiLight.position.set(0,150,0);
+        scene.add(hemiLight);
+
+        var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+        directionalLight.position.set(200, 150, 0);
+        directionalLight.target.position.set(0, 0, 0);
+
+        directionalLight.castShadow = true;
+        directionalLight.shadow.mapSize.width = 512; //阴影映射宽度
+        directionalLight.shadow.mapSize.height = 512; //阴影映射高度
+        directionalLight.shadow.camera.near = 50; //投影近点，距离光源多近能产生阴影
+        directionalLight.shadow.camera.far = 500; //投影远点，到哪一点为止不再产生阴影
+        directionalLight.shadowCameraLeft = -150;
+        directionalLight.shadowCameraRight = 150;
+        directionalLight.shadowCameraTop = 150;
+        directionalLight.shadowCameraBottom = -150;
+
+        scene.add(directionalLight);
+        scene.add(directionalLight.target);
+
+    /////////////
+    // control //
+    /////////////
+    var dirLightControl = new function() {
+        this.intensity = 1;
+        this.inclination = 30; //倾角 0-180
+        this.azimuth = 90; //方位角 0-360
+    };
+
+    var gui = new dat.GUI();
+    gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
+    gui.add(dirLightControl, 'inclination', 20, 60, 1).onChange(updateSun);
+    gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
+
+    /////////////
+    /// 调参数 ///
+    /////////////
+    function updateSun() {
+        //弧度 = 角度 * Math.PI / 180
+        var distance = 500;
+        var alpha = dirLightControl.inclination * Math.PI / 180;
+        var beta = dirLightControl.azimuth * Math.PI / 180;
+
+        directionalLight.intensity = dirLightControl.intensity;
+        directionalLight.position.x = distance * Math.cos( alpha ) * Math.sin( beta );
+        directionalLight.position.y = distance * Math.sin( alpha );
+        directionalLight.position.z = - ( distance * Math.cos( alpha ) * Math.cos( beta ) );
+    }
 
 
-        gui.add(pointLight, 'intensity', 0.5, 5);
-        gui.add(pointLight.position, 'y', 10, 30);
-        gui.add(pointLight.position, 'x', -30, 30);
-        gui.add(pointLight.position, 'z', -30, 30);
+	    
+
 
 
         var bottomBlock = getTransparentBottom();
