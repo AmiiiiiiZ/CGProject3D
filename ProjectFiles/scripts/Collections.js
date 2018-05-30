@@ -16,10 +16,11 @@ function useMaterial(color, collection, transparency) {
         // When the color is new 
         material = new THREE.MeshToonMaterial({
             color: color,
-            transparent: true, opacity: 0.8
+            transparent: true,
+            opacity: 0.9,
+            flatShading: true
         });
         material.normalMap = loader.load('img/legoNormal2.png');
-
         collection[color] = material;
         console.log("new material created!");
     }

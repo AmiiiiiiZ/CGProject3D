@@ -100,7 +100,7 @@
      //   var gui = new dat.GUI();
 
         var ratio = window.innerWidth / window.innerHeight;
-        var camera = new THREE.PerspectiveCamera(45, ratio, 1, 1000);
+        var camera = new THREE.PerspectiveCamera(45, ratio, 1, 5000);
         // Place the camera (at the coordinate of its neareast parent.)
         camera.position.set(12, 18, 28);
         // Determine which point the camera is looking at.
@@ -134,6 +134,7 @@
 
     <!-- This script section is where we add THREE.JS code. -->
     <script>
+        scene.fog = new THREE.FogExp2(0xffffff, 0.003);
 
         // Use the clock to calculate time elapse.
         var clock = new THREE.Clock();
@@ -178,7 +179,8 @@
 
         colorChanger = new Color(box);
 
-
+            var underground = getSphere(300);
+            scene.add(underground);
 
 
         var bone = getBoxBone();

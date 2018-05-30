@@ -431,8 +431,7 @@ function onDocumentMouseDown(event) {
 
     // If selected the non-controlled box, 
     // 
-    if (intersects.length > 0 && intersects[0].object.name != 'ground' && intersects[0].object.name != 'bone' && intersects[0].object.name != 'control'
-        && intersects[0].object.name != 'cone') {
+    if (intersects.length > 0 && intersects[0].object.name == 'block') {
 
         if (clickToMoveControl) {
             if (clickToMoveControlStep > 1) {
@@ -485,9 +484,12 @@ function onDocumentMouseDown(event) {
             var y = Math.round(intersects[0].point.y + 0.5);
             var z = Math.round(intersects[0].point.z);
 
-            box.position.x = x;
-            box.position.y = y;
-            box.position.z = z;
+            if (x > -boundry && x < boundry && y < boundry && z > -boundry && z < boundry ) {
+
+                box.position.x = x;
+                box.position.y = y;
+                box.position.z = z;
+            }
 
             updateBlockPosition(box);
         }
