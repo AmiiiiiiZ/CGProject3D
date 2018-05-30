@@ -3,6 +3,7 @@
     var raycaster = new THREE.Raycaster();
     var selectedObj = false;
     var boundingBox, previousSelection;
+    var limit = 50;
 
     function onDocumentMouseDown(event)
     {
@@ -20,7 +21,7 @@
       if (intersects.length > 0)
       {
 
-        if ((intersects[0].object.name!="ground") && (!selectedObj))
+        if ((intersects[0].object.name!="ground") && (!selectedObj) && (intersects[0].object.name == "nature"))
         {
           // Create a bounding box around the selected object
           boundingBox = new THREE.BoxHelper(intersects[0].object, 0xffffff);
@@ -43,14 +44,29 @@
       if ((intersects[0].object.name=="ground") && (selectedObj))
       {
           var pos=intersects[0].point;
-          previousSelection.position.x =pos.x;
-          previousSelection.position.z =pos.z;
+
+          // Add restriction so nature objects do not move to the middle 50x50 limit area
+              if ((pos.x < limit) && (pos.x > -limit)) {
+                  if ((pos.z > limit) || (pos.z < -limit)) {
+                      previousSelection.position.x =pos.x;
+                      previousSelection.position.z =pos.z;
+                  } 
+
+              } else if ((pos.z < limit) && (pos.z > -limit)) {
+                  if ((pos.x > limit) || (pos.x < -limit)) {
+                      previousSelection.position.x =pos.x;
+                      previousSelection.position.z =pos.z;
+                  } 
+
+              } else {
+                    previousSelection.position.x =pos.x;
+                    previousSelection.position.z =pos.z;
+              }
 
           // bounding box follows the new position of the object
           boundingBox.update();
-          //previousSelection = null;
           console.log(pos.x + "," + pos.y + "," + pos.z);
-          //selectedObj = false;
+
       }
       }
     }
@@ -84,14 +100,16 @@ function GenerateRandomModels(object,material,quantity)
               child.position.x = Math.random() * 300 - 150 ;
               child.position.z = Math.random() * 300 - 150 ;
               child.position.y -= 0.5;
+              child.name = "nature";
 
-              if ((child.position.x < 50) && (child.position.x > -50)) {
-                  if ((child.position.z > 50) || (child.position.z < -50)) {
+              // Add restriction for nature objects not to grown in 50x50 limit area in the middle
+              if ((child.position.x < limit) && (child.position.x > -limit)) {
+                  if ((child.position.z > limit) || (child.position.z < -limit)) {
                       scene.add(mesh);
                   } 
 
-              } else if ((child.position.z < 50) && (child.position.z > -50)) {
-                  if ((child.position.x > 50) || (child.position.x < -50)) {
+              } else if ((child.position.z < limit) && (child.position.z > -limit)) {
+                  if ((child.position.x > limit) || (child.position.x < -limit)) {
                       scene.add(mesh);
                   } 
 
