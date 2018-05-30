@@ -171,8 +171,6 @@
         };
 
         var box = getBox(0x000000);
-        box.material = new THREE.MeshPhongMaterial();
-        box.material.map = loader.load('img/text1.png');
         box.name = 'control';
 
         scene.add(box);
@@ -180,7 +178,6 @@
 
         colorChanger = new Color(box);
 
-    //    gui.addColor(colorChanger, 'color');
 
 
 
@@ -229,6 +226,7 @@
     gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
     gui.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
     gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
+        gui.addColor(colorChanger, 'color');
 
     /////////////
     /// 调参数 ///

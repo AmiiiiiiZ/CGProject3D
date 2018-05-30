@@ -506,7 +506,7 @@ var clickToMoveControlStep = 0;
 
 
 // when the mouse is clicked, call the given function
-document.addEventListener('mousedown', onDocumentMouseDown, false);
+document.addEventListener('click', onDocumentMouseDown, false);
 
 
 //coudn't merge in the original key event function. An error occured..

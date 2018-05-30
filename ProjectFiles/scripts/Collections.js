@@ -14,10 +14,11 @@ function useMaterial(color, collection, transparency) {
     }
     else {
         // When the color is new 
-        material = new THREE.MeshPhongMaterial({
-            color: color
+        material = new THREE.MeshToonMaterial({
+            color: color,
+            transparent: true, opacity: 0.8
         });
-        material.map = loader.load('img/text1.png');
+        material.normalMap = loader.load('img/legoNormal2.png');
 
         collection[color] = material;
         console.log("new material created!");
