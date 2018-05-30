@@ -265,10 +265,7 @@
 
         // Make buttons work.
         setButtonEvents();
-
-
-        var raycaster = new THREE.Raycaster();
-        var selectedObj = false;
+            
 		
 		//Create a Car for Adventure//////////////////////
 		var group = new THREE.Group();
@@ -351,7 +348,7 @@
 			
 		// Car Animation
 		var delta = clock2.getDelta(); // seconds.
-		var moveDistance = 5 * delta; // 200 pixels per second
+		var moveDistance = 10 * delta; // 200 pixels per second
 		var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 		var rotation_matrix = new THREE.Matrix4().identity();
 		
@@ -387,7 +384,7 @@
 		camera2.position.x = relativeCameraOffset.x;
 		camera2.position.y = relativeCameraOffset.y;
 		camera2.position.z = relativeCameraOffset.z;
-		camera2.lookAt( group.position );
+            camera2.lookAt(group.position.x, group.position.y + 5, group.position.z);
       
 		camera.updateProjectionMatrix();
 		camera2.updateProjectionMatrix();

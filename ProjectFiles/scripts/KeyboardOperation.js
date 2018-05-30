@@ -368,11 +368,13 @@ function setButtonEvents() {
 					scene.add(group);
 					scene.add(camera2);
 					//scene.remove(camera);
+                    scene.fog = new THREE.FogExp2(0x666666, 0.01);
 				} 
 				if (camera_flag > 0) {
 					scene.remove(group);
 					scene.remove(camera2);
 					//scene.add(camera);
+                    scene.fog = new THREE.FogExp2(0xffffff, 0.003);
 				}
 	});
 	
