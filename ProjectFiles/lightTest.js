@@ -1,5 +1,3 @@
-
-
 var scene;
 function initScene() {
     scene = new THREE.Scene();
@@ -48,37 +46,34 @@ function initStats() {
     document.body.appendChild(stats.domElement);
 }
 
-
 /////////////
 // control //
 /////////////
 var dirLightControl = new function() {
     this.intensity = 1;
-    this.inclination = 0.5; //倾角 0-180
-    this.azimuth = 0.5; //方位角 0-360
+    this.inclination = 30; //倾角 0-180
+    this.azimuth = 90; //方位角 0-360
 };
 
 var gui = new dat.GUI();
 gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-gui.add(dirLightControl, 'inclination', 0, 0.5, 0.001).onChange(updateSun);
-gui.add(dirLightControl, 'azimuth', 0, 1, 0.001).onChange(updateSun);
+gui.add(dirLightControl, 'inclination', 0, 45, 1).onChange(updateSun);
+gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
 
 /////////////
 /// 调参数 ///
 /////////////
 function updateSun() {
-    //still get some problems but i'll fix it
-    //i think it's because of the trigonometric function
+    //弧度 = 角度 * Math.PI / 180
     var distance = 250;
-  	var theta = Math.PI * ( dirLightControl.inclination - 0.5 );
-  	var phi = 2 * Math.PI * ( dirLightControl.azimuth - 0.5 );
+  	var alpha = dirLightControl.inclination * Math.PI / 180;
+  	var beta = dirLightControl.azimuth * Math.PI / 180;
 
     directionalLight.intensity = dirLightControl.intensity;
-    directionalLight.position.x = distance * Math.cos( phi );
-    directionalLight.position.y = distance * Math.sin( phi ) * Math.sin( theta );
-    directionalLight.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+    directionalLight.position.x = distance * Math.cos( alpha ) * Math.sin( beta );
+    directionalLight.position.y = distance * Math.sin( alpha );
+    directionalLight.position.z = - ( distance * Math.cos( alpha ) * Math.cos( beta ) );
 }
-
 
 /////////////
 /// light ///
@@ -112,8 +107,6 @@ function initLights() {
     scene.add(directionalLight);
     scene.add(directionalLight.target);
 }
-
-
 
 var ground;
 function initGround() {
@@ -180,8 +173,6 @@ function initHelpers() {
     scene.add(dirLightHelper);
   }
 
-
-
 //this function is called when the window is resized
 var MyResize = function() {
     var width = window.innerWidth;
@@ -192,8 +183,6 @@ var MyResize = function() {
     renderer.render(scene,camera);
 };
 window.addEventListener('resize', MyResize);
-
-
 
 function animation() {
     renderer.render(scene, camera);
@@ -216,3 +205,17 @@ function threeStart() {
 }
 
 threeStart();
+
+//skybox
+ var geometry = new THREE.CubeGeometry(800, 800, 800);
+
+ var cubeMaterial = [];
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/front.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/back.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/up.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/down.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/right.jpg"), side: THREE.DoubleSide} ));
+ cubeMaterial.push( new THREE.MeshBasicMaterial( {map: new THREE.TextureLoader().load("image/left.jpg"), side: THREE.DoubleSide} ));
+
+ var skyBox = new THREE.Mesh(geometry, cubeMaterial);
+ scene.add(skyBox);
