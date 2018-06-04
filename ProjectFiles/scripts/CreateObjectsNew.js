@@ -69,7 +69,7 @@ function getPlane(size) {
 
 
     var material_ground = new THREE.MeshPhongMaterial({
-        color: 0x6423,
+        color: 0x6423, // spring
         //color: 0x6642,
         normalMap: normal_map_ground,
         transparent: true,
@@ -101,7 +101,7 @@ function getPlaneUnderneath(size) {
     var displacement_map = loader.load('img/displacementTerrain.jpg');
 
     var material_ground = new THREE.MeshPhongMaterial({
-        color: 0x6423,
+        color: 0x6423, // spring
         displacementMap: displacement_map,
         displacementScale: 40,
         side: THREE.DoubleSide
@@ -114,7 +114,7 @@ function getPlaneUnderneath(size) {
 
     // Rotate the plane 90 degree.
     mesh.rotation.x = Math.PI / 2;
-    mesh.position.y -= 0.5;
+    mesh.position.y -= 5;
 
     return mesh;
 }

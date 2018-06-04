@@ -184,6 +184,7 @@
         scene.add(underground_plane);
 
         SpringForest();
+        //AutumnForest();
 
 
         var bone = getBoxBone();
@@ -261,11 +262,16 @@ function GenerateScenery() {
 
         RemoveForest();
         SpringForest();
+        ground.material.color.setHex(0x6423);
+        underground_plane.material.color.setHex(0x6423);
 
     } else if (sceneryControl.season == "Autumn") {
 
         RemoveForest();
         AutumnForest();
+        //ground.material.color.setHex(0x7a6400);
+        ground.material.color.setHex(0x4b5500);
+        underground_plane.material.color.setHex(0x4b5500);
         
     }
 }
