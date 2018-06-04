@@ -125,7 +125,33 @@
     <!-- This script section stores the functions about controlling the box with your keyboard. -->
     <script src="scripts/KeyboardOperation.js"></script>
 	<script src="js/dat.gui.min.js"></script>
+	
+    <!-- This script section is for creating the skydome. -->
+    <!-- I didn't find a suitable lego-style pic for sky so I just load a test pic >_<. -->
+	
+    <script type="application/x-glsl" id="sky-vertex">
+    varying vec2 vUV;
 
+    void main() {
+      vUV = uv;
+      vec4 pos = vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewMatrix * pos;
+    }
+    </script>
+
+    <script type="application/x-glsl" id="sky-fragment">
+    uniform sampler2D texture;
+    varying vec2 vUV;
+
+    void main() {
+      vec4 sample = texture2D(texture, vUV);
+      gl_FragColor = vec4(sample.xyz, sample.w);
+    }
+
+    </script>
+	
+    <script src="scripts/skydome.js"></script>
+	
 
     <!-- This script section is where we add THREE.JS code. -->
     <script>
