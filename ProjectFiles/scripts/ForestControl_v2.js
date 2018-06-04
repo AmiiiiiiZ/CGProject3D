@@ -126,7 +126,18 @@ function GenerateRandomModels(object,material,quantity)
   }
 }
 
+function RemoveForest(){
+
+        for (var i = scene.children.length - 1; i >= 0; i--) {
+
+            if (scene.children[i].name == "nature") {
+                scene.remove(scene.children[i]);
+            }
+        }
+}
+
 function SpringForest(){
+        RemoveForest();
         GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 30);
         GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
         GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 45);
@@ -137,6 +148,7 @@ function SpringForest(){
 }
 
 function AutumnForest(){
+        RemoveForest();
         GenerateRandomModels("models/nature/tree_oak_fall.obj", "models/nature/tree_oak_fall.mtl", 30);
         GenerateRandomModels("models/nature/tree_plateau_fall.obj", "models/nature/tree_plateau_fall.mtl", 40);
         GenerateRandomModels("models/nature/tree_simple_fall.obj", "models/nature/tree_simple_fall.mtl", 45);
@@ -144,9 +156,8 @@ function AutumnForest(){
         GenerateRandomModels("models/nature/flower_blue3.obj", "models/nature/flower_blue3.mtl", 50);
         GenerateRandomModels("models/nature/mushroom_redGroup.obj", "models/nature/mushroom_redGroup.mtl", 50);
 }
+       
 
-AutumnForest();
-        
 
 function LoadModel(object,material, posx, posz, roty)
 {

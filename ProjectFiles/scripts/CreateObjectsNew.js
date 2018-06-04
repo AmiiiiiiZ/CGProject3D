@@ -105,7 +105,7 @@ function getPlaneUnderneath(size) {
     var material_ground = new THREE.MeshPhongMaterial({
         color: 0x6423,
         displacementMap: displacement_map,
-        //displacementScale: 40,
+        displacementScale: 40,
         side: THREE.DoubleSide
     });
 

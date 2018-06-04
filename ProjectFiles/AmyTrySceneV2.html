@@ -190,6 +190,7 @@
         underground_plane.name = 'ground';
         scene.add(underground_plane);
 
+        SpringForest();
 
 
         var bone = getBoxBone();
@@ -233,11 +234,48 @@
         this.azimuth = 90; //方位角 0-360
     };
 
+    var sceneryControl = {
+        season: "Spring"
+    };
+
+
+function DisplayGUI() {
+
     var gui = new dat.GUI();
-    gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-    gui.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
-    gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
-        gui.addColor(colorChanger, 'color');
+
+    var lego = gui.addFolder('Lego brick');
+    lego.addColor(colorChanger, 'color');
+
+    var lightCtrl = gui.addFolder('Lighting');
+    lightCtrl.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
+
+    var scenery = gui.addFolder('Scenery');
+    scenery.add(sceneryControl, 'season', ['Spring', 'Autumn']).name('Season').onChange(GenerateScenery);
+
+    gui.open();
+    lego.open();
+    lightCtrl.open();
+    scenery.open();
+}
+
+function GenerateScenery() {
+
+    if (sceneryControl.season == "Spring") {
+
+        RemoveForest();
+        SpringForest();
+
+    } else if (sceneryControl.season == "Autumn") {
+
+        RemoveForest();
+        AutumnForest();
+        
+    }
+}
+
+    DisplayGUI();
 
     /////////////
     /// 调参数 ///
