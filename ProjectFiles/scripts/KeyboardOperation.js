@@ -87,36 +87,38 @@ function keyDown(event){
         }
 
     }
+	
+	if (keyboard[16]) { // shiftbar - car: turn on/off the headlight.
+			
+			headlight_flag *= -1;
+			if(headlight_flag == 1){
+				group.getObjectByName("headlight").intensity = 0.4;
+			} else {
+				group.getObjectByName("headlight").intensity = 0;
+			}
+	}	
 
     switch (event.keyCode) {
 
 
         case 73: // i
             moveForward = true;
-            material_back.color = new THREE.Color(0.5, 0, 0);
-            //backlight1.intensity = 0;
-            //backlight2.intensity = 0;
+            group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
             break;
 
         case 74: // j
             moveLeft = true;
-            material_back.color = new THREE.Color(0.5, 0, 0);
-            //backlight1.intensity = 0;
-            //backlight2.intensity = 0;
+            group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
             break;
 
         case 75: // k
             moveBackward = true;
-            material_back.color = new THREE.Color(0.5, 0, 0);
-            //backlight1.intensity = 0;
-            //backlight2.intensity = 0;
+            group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
             break;
 
         case 76: // l
             moveRight = true;
-            material_back.color = new THREE.Color(0.5, 0, 0);
-            //backlight1.intensity = 0;
-            //backlight2.intensity = 0;
+            group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
             break;
 
     }
@@ -513,12 +515,6 @@ var clickToMoveControlStep = 0;
 document.addEventListener('click', onDocumentMouseDown, false);
 
 
-//coudn't merge in the original key event function. An error occured..
-var onKeyDown = function ( event ) {
-
-      
-
-    };
 
     var onKeyUp = function ( event ) {
 
@@ -526,30 +522,23 @@ var onKeyDown = function ( event ) {
 
         case 73: // i
           moveForward = false;
-          material_back.color=  new THREE.Color(1,0,0);
-          //backlight1.intensity = 0.2;
-          //backlight2.intensity = 0.2;
+          //material_back.color=  new THREE.Color(1,0,0);
+		  group.getObjectByName("back1").material.color = new THREE.Color(1, 0, 0);
           break;
 
         case 74: // j
           moveLeft = false;
-          material_back.color=  new THREE.Color(1,0,0);
-          //backlight1.intensity = 0.2;
-          //backlight2.intensity = 0.2;
+          group.getObjectByName("back1").material.color = new THREE.Color(1, 0, 0);
           break;
 
         case 75: // k
           moveBackward = false;
-          material_back.color=  new THREE.Color(1,0,0);
-          //backlight1.intensity = 0.2;
-          //backlight2.intensity = 0.2;
+          group.getObjectByName("back1").material.color = new THREE.Color(1, 0, 0);
           break;
 
         case 76: // l
           moveRight = false;
-          material_back.color=  new THREE.Color(1,0,0);
-          //backlight1.intensity = 0.2;
-          //backlight2.intensity = 0.2;
+          group.getObjectByName("back1").material.color = new THREE.Color(1, 0, 0);
           break;
 
       }

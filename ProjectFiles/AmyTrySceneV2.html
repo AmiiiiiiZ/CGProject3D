@@ -81,7 +81,7 @@
 		<br/>
 		
 		<button id="adventure">Start Adventure!</button>
-		<p>Move Car: <br />Forward(i),Backward(k),<br />Left(j),Right(l)</p>
+		<p>Move Car: <br />Forward(i),Backward(k),<br />Left(j),Right(l)<br />Turn On/Off headlight(Shift)</p>
 		<button id="screenshot">Screen Shot</button>
         <br />
 
@@ -275,48 +275,17 @@
         setButtonEvents();
             
 		
-		//Create a Car for Adventure//////////////////////
+		///////////Create a Car for Adventure//////////////////////
 		var group = new THREE.Group();
-		group.add(getCar());
+		group = getCar();
 		
-		var wheel1 = getWheel(-1.2,-0.2,-1.2);
-		var wheel2 = getWheel(1.2,-0.2,-1.2);
-		var wheel3 = getWheel(-1.2,-0.2,1.2);
-		var wheel4 = getWheel(1.2,-0.2,1.2);
-		var backlight1 = getBackLight(-1,0.8,2.5);
-		var backlight2 = getBackLight(1,0.8,2.5);
-		
-		var material_back = new THREE.MeshPhongMaterial();
-		material_back.color=  new THREE.Color(1,0,0);
-		var geometry_back = new THREE.BoxGeometry(0.6,0.3,0.6);
-		var back1 = new THREE.Mesh(geometry_back,material_back);
-		var back2 = new THREE.Mesh(geometry_back,material_back);
-		back1.position.set(-1,0.55,1.75);
-		back2.position.set(1,0.55,1.75);
-		
-		group.add(wheel1);
-		group.add(wheel2);
-		group.add(wheel3);
-		group.add(wheel4);
-		//group.add(backlight1); --got error.
-		//group.add(backlight2);
-		group.add(back1);
-		group.add(back2);
-		
-		wheel1.castShadow = true;
-		wheel2.castShadow = true;
-		wheel3.castShadow = true;
-		wheel4.castShadow = true;
-
 		var camera_flag = 1;
+		var headlight_flag = -1;
 		var moveForward=false;
 		var moveLeft=false;
 		var moveBackward=false;
 		var moveRight=false;
 		//////////////////////////////////////////////////////////
-
-
-
 
         //////////////
         // CONTROLS //
@@ -371,19 +340,19 @@
 		if (moveForward==true)
 		{
 			group.translateZ( -moveDistance );
-			wheel1.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
-			wheel2.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
-			wheel3.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
-			wheel4.rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
+			group.getObjectByName("wheel1").rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
+			group.getObjectByName("wheel2").rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
+			group.getObjectByName("wheel3").rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
+			group.getObjectByName("wheel4").rotateOnAxis( new THREE.Vector3(0,1,0), 0.3);
 			 
 		}
 		if (moveBackward==true)
 		{
 			group.translateZ(  moveDistance );
-			wheel1.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
-			wheel2.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
-			wheel3.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
-			wheel4.rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
+			group.getObjectByName("wheel1").rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
+			group.getObjectByName("wheel2").rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
+			group.getObjectByName("wheel3").rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
+			group.getObjectByName("wheel4").rotateOnAxis( new THREE.Vector3(0,1,0), -0.3);
 		}
 		var relativeCameraOffset = new THREE.Vector3(0,5,13);
 		var cameraOffset = relativeCameraOffset.applyMatrix4( group.matrixWorld );
@@ -392,8 +361,8 @@
 		camera2.position.x = relativeCameraOffset.x;
 		camera2.position.y = relativeCameraOffset.y;
 		camera2.position.z = relativeCameraOffset.z;
-            camera2.lookAt(group.position.x, group.position.y + 5, group.position.z);
-      
+        camera2.lookAt(group.position.x, group.position.y + 4, group.position.z);
+		
 		camera.updateProjectionMatrix();
 		camera2.updateProjectionMatrix();
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
