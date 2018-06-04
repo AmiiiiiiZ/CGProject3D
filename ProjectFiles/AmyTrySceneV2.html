@@ -190,27 +190,28 @@
         var bone = getBoxBone();
         bone.visible = false;
         scene.add(bone);
-
-
-  /////////////
+    
+	    
+    /////////////
     /// light ///
     /////////////
-      var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
+        var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
         scene.add(ambientLight);
 
-        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.3);
+        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.5);
         hemiLight.position.set(0,200,0);
         scene.add(hemiLight);
 
-        var directionalLight = new THREE.DirectionalLight(0xFFFFFF);
+        var directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
         directionalLight.position.set(400, 300, 0);
         directionalLight.target.position.set(0, 0, 0);
 
+        //Set up shadow properties for the light
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 1024; //阴影映射宽度
-        directionalLight.shadow.mapSize.height = 1024; //阴影映射高度
-        directionalLight.shadow.camera.near = 50; //投影近点，距离光源多近能产生阴影
-        directionalLight.shadow.camera.far = 1000; //投影远点，到哪一点为止不再产生阴影
+        directionalLight.shadow.mapSize.width = 1024;
+        directionalLight.shadow.mapSize.height = 1024;
+        directionalLight.shadow.camera.near = 50;
+        directionalLight.shadow.camera.far = 1000;
         directionalLight.shadowCameraLeft = -300;
         directionalLight.shadowCameraRight = 300;
         directionalLight.shadowCameraTop = 300;
@@ -224,8 +225,9 @@
     /////////////
     var dirLightControl = new function() {
         this.intensity = 1;
-        this.inclination = 30; //倾角 0-180
-        this.azimuth = 90; //方位角 0-360
+        this.inclination = 0.2;
+        this.azimuth = 0;
+        this.color = 0xFFFFFF;
     };
 
     var sceneryControl = {
@@ -234,16 +236,16 @@
 
 
 function DisplayGUI() {
-
     var gui = new dat.GUI();
 
     var lego = gui.addFolder('Lego brick');
     lego.addColor(colorChanger, 'color').name('Color'); // Add it to change color with the gui panel
 
     var lightCtrl = gui.addFolder('Lighting');
-    lightCtrl.add(dirLightControl, 'intensity', 0, 1).name('Intensity').onChange(updateSun);
-    lightCtrl.add(dirLightControl, 'inclination', 20, 50, 1).name('Inclination').onChange(updateSun);
-    lightCtrl.add(dirLightControl, 'azimuth', 0, 360, 1).name('Azimuth').onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'intensity', 0, 1, 0.1).onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'inclination', 0, 0.5, 0.0001).onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'azimuth', 0, 0.5, 0.0001).onChange(updateSun);
+    lightCtrl.addColor(dirLightControl, 'color').onChange(updateSun);
 
     var scenery = gui.addFolder('Scenery');
     scenery.add(sceneryControl, 'season', ['Spring', 'Autumn']).name('Season').onChange(GenerateScenery);
@@ -252,9 +254,7 @@ function DisplayGUI() {
     lego.open();
     lightCtrl.open();
     scenery.open();
-}
-
-
+}  
 
 function GenerateScenery() {
 
@@ -278,25 +278,19 @@ function GenerateScenery() {
 
     DisplayGUI();
 
-
-    /////////////
-    /// 调参数 ///
-    /////////////
-    function updateSun() {
-        //弧度 = 角度 * Math.PI / 180
+//Update directional light
+function updateSun() {
         var distance = 500;
-        var alpha = dirLightControl.inclination * Math.PI / 180;
-        var beta = dirLightControl.azimuth * Math.PI / 180;
+        var alpha = Math.PI * (dirLightControl.inclination - 0.5);
+        var beta = 2 * Math.PI * (dirLightControl.azimuth - 0.5);
 
         directionalLight.intensity = dirLightControl.intensity;
-        directionalLight.position.x = distance * Math.cos( alpha ) * Math.sin( beta );
-        directionalLight.position.y = distance * Math.sin( alpha );
-        directionalLight.position.z = - ( distance * Math.cos( alpha ) * Math.cos( beta ) );
+        directionalLight.position.x = distance * Math.cos( beta );
+        directionalLight.position.y = distance * Math.sin( beta ) * Math.sin( alpha );
+        directionalLight.position.z = distance * Math.sin( beta ) * Math.cos( alpha );
+
+        directionalLight.color = new THREE.Color( dirLightControl.color );
     }
-
-
-	    
-
 
         // Make a square at the bottom of the control box.
         var bottomBlock = getTransparentBottom();
