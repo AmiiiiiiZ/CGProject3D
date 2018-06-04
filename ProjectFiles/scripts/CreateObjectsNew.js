@@ -206,6 +206,7 @@ function getAmbientLight(intensity) {
 
 // Create a car
 function getCar() {
+	
 		//cylinder1
 		var geometry_cylinder1 = new THREE.CylinderGeometry( 0.5, 0.5, 0.7, 20 );
 		var material_cylinder1 = new THREE.MeshPhongMaterial( {color: 0xffff00} );
@@ -267,12 +268,52 @@ function getCar() {
 		var body3 = new THREE.Mesh(geometry_body3,material_body3);
 		body3.position.set(0,0.15,0.1);
 		
+		//headlight
 		var headlight = getPointLight();
 		headlight.position.set(0,1,-1.75);
 		headlight.color.set(new THREE.Color(1,1,1));
-		headlight.intensity = 0.3;
+		headlight.intensity = 0;
+		
+		//4 Wheels
+		var texture_wheel = new THREE.TextureLoader().load('img/tire.png');
+		var geometry_wheel = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
+		var material_wheel = new THREE.MeshPhongMaterial( {map:texture_wheel} );
+		
+		var wheel1 = new THREE.Mesh( geometry_wheel, material_wheel );
+		wheel1.position.set(-1.2,-0.2,-1.2);
+		wheel1.rotation.z = 1.565;
+		
+		var wheel2 = new THREE.Mesh( geometry_wheel, material_wheel );
+		wheel2.position.set(1.2,-0.2,-1.2);
+		wheel2.rotation.z = 1.565;
+		
+		var wheel3 = new THREE.Mesh( geometry_wheel, material_wheel );
+		wheel3.position.set(-1.2,-0.2,1.2);
+		wheel3.rotation.z = 1.565;
+		
+		var wheel4 = new THREE.Mesh( geometry_wheel, material_wheel );
+		wheel4.position.set(1.2,-0.2,1.2);
+		wheel4.rotation.z = 1.565;
+		
+		//2 backlights
+		var material_back = new THREE.MeshPhongMaterial();
+		material_back.color=  new THREE.Color(1,0,0);
+		var geometry_back = new THREE.BoxGeometry(0.6,0.3,0.6);
+		var back1 = new THREE.Mesh(geometry_back,material_back);
+		var back2 = new THREE.Mesh(geometry_back,material_back);
+		back1.position.set(-1,0.55,1.75);
+		back2.position.set(1,0.55,1.75);
 		
 		//group
+		
+		wheel1.name = "wheel1";
+		wheel2.name = "wheel2";
+		wheel3.name = "wheel3";
+		wheel4.name = "wheel4";
+		back1.name = "back1";
+		back2.name = "back2";
+		headlight.name = "headlight";
+		
 		var group = new THREE.Group();
 		group.add( cylinder1 );
 		group.add( cylinder2 );
@@ -284,6 +325,14 @@ function getCar() {
 		group.add( body2 );
 		group.add( body3 );
 		group.add( headlight );
+		group.add( wheel1 );
+		group.add( wheel2 );
+		group.add( wheel3 );
+		group.add( wheel4 );
+		group.add( back1 );
+		group.add( back2 );
+		group.add(material_back);
+		
 		body.castShadow = true;
 		cylinder1.castShadow = true;
 		cylinder2.castShadow = true;
@@ -291,29 +340,11 @@ function getCar() {
 		cube2.castShadow = true;
 		cube3.castShadow = true;
 		handle.castShadow = true;
+		wheel1.castShadow = true;
+		wheel2.castShadow = true;
+		wheel3.castShadow = true;
+		wheel4.castShadow = true;
 		
 		
 		return group;
-}
-// Create a car
-function getWheel(x,y,z) {
-	
-	var texture_wheel = new THREE.TextureLoader().load('img/tire.png');
-	var geometry_wheel = new THREE.CylinderGeometry( 0.5, 0.5, 0.6, 20 );
-	var material_wheel = new THREE.MeshPhongMaterial( {map:texture_wheel} );
-	var wheel = new THREE.Mesh( geometry_wheel, material_wheel );
-	wheel.position.set(x,y,z);
-	wheel.rotation.z = 1.565;
-		
-	return wheel;
-}
-
-function getBackLight(x,y,z) {
-	
-	var backlight = getPointLight();
-	backlight.position.set(x,y,z);
-	backlight.color.set(new THREE.Color(1,0,0));
-	backlight.intensity = 0.2;
-	
-	return backlight;
 }
