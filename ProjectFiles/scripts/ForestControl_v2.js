@@ -74,9 +74,10 @@
     // When the mouse is clicked, call the given function
     document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-
+var objArray = [];
 function GenerateRandomModels(object,material,quantity)
 {
+
 
   var counter = 0;
   while (counter < quantity) {
@@ -107,15 +108,18 @@ function GenerateRandomModels(object,material,quantity)
               if ((child.position.x < limit) && (child.position.x > -limit)) {
                   if ((child.position.z > limit) || (child.position.z < -limit)) {
                       scene.add(mesh);
+                      objArray.push(mesh);
                   } 
 
               } else if ((child.position.z < limit) && (child.position.z > -limit)) {
                   if ((child.position.x > limit) || (child.position.x < -limit)) {
                       scene.add(mesh);
+                      objArray.push(mesh);
                   } 
 
               } else {
                   scene.add(mesh);
+                  objArray.push(mesh);
               }
             }
           });
@@ -128,27 +132,22 @@ function GenerateRandomModels(object,material,quantity)
 
 function RemoveForest(){
 
-        for (var i = scene.children.length - 1; i >= 0; i--) {
+        for (var i = objArray.length - 1; i >= 0; i--) {
 
-            if (scene.children[i].name == "nature") {
-                scene.remove(scene.children[i]);
-            }
+            scene.remove(objArray[i]);
         }
 }
 
 function SpringForest(){
-        RemoveForest();
         GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 30);
         GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
         GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 45);
         GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 35);
         GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
-
 }
 
 function AutumnForest(){
-        RemoveForest();
         GenerateRandomModels("models/nature/tree_oak_fall.obj", "models/nature/tree_oak_fall.mtl", 30);
         GenerateRandomModels("models/nature/tree_plateau_fall.obj", "models/nature/tree_plateau_fall.mtl", 40);
         GenerateRandomModels("models/nature/tree_simple_fall.obj", "models/nature/tree_simple_fall.mtl", 45);
