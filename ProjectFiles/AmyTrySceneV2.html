@@ -136,7 +136,7 @@
     <script>
 
         // Add fog to the scene
-        scene.fog = new THREE.FogExp2(0xffdcaa, 0.0001);
+        scene.fog = new THREE.FogExp2(0xffdcaa, 0.0003);
 
         // Use the clock to calculate time elapse.
         var clock = new THREE.Clock();
@@ -189,6 +189,7 @@
         var underground_plane = getPlaneUnderneath(300);
         underground_plane.name = 'ground';
         scene.add(underground_plane);
+
 
 
         var bone = getBoxBone();

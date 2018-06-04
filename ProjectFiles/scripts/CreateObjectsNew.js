@@ -75,7 +75,7 @@ function getPlane(size) {
         //color: 0x6642,
         normalMap: normal_map_ground,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.6,
         side: THREE.DoubleSide
 
     });
@@ -116,7 +116,7 @@ function getPlaneUnderneath(size) {
 
     // Rotate the plane 90 degree.
     mesh.rotation.x = Math.PI / 2;
-    mesh.position.y += 0.5;
+    //mesh.position.y += 0.5;
 
     return mesh;
 }
@@ -134,14 +134,6 @@ function getSphere(size) {
     });
 
     var _loader = new THREE.TextureLoader();
-
-    // var texture = _loader.load('img/pixel2.jpg', function (texture) {
-    //     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    //     texture.offset.set(0, 0);
-    //     texture.repeat.set(30, 30);
-    // });
-
-    // material.map = texture;
 
     var mesh = new THREE.Mesh(
         geometry,

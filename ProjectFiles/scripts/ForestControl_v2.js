@@ -3,7 +3,7 @@
     var raycaster = new THREE.Raycaster();
     var selectedObj = false;
     var boundingBox, previousSelection;
-    var limit = 50;
+    var limit = 55;
 
     function onDocumentMouseDown(event)
     {
@@ -98,7 +98,6 @@ function GenerateRandomModels(object,material,quantity)
               child.receiveShadow = true;
 
               child.geometry.computeVertexNormals();
-              child.material.shading = THREE.SmoothShading;
               child.position.x = Math.random() * 300 - 150 ;
               child.position.z = Math.random() * 300 - 150 ;
               child.position.y -= 0.5;
@@ -134,6 +133,68 @@ function GenerateRandomModels(object,material,quantity)
         GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 35);
         GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
+
+
+function LoadModel(object,material, posx, posz, roty)
+{
+
+    var mtlLoader = new THREE.MTLLoader();
+      mtlLoader.load(material, function(materials){
+
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+
+        objLoader.load(object, function(mesh){
+
+          mesh.traverse(function(child){
+            if( child instanceof THREE.Mesh ){
+
+              child.castShadow = true;
+              child.receiveShadow = true;
+
+              child.geometry.computeVertexNormals();
+              child.position.x = posx ;
+              child.position.z = posz ;
+              child.position.y -= 0.5;
+              child.rotation.y = roty;
+              child.name = "fence_corner";
+              scene.add(child);
+
+            }
+          });
+        });
+      });
+
+}
+
+// Arrange fence surrounding building area. Trees are not allowed in this area
+LoadModel("models/nature/fence_corner.obj","models/nature/fence_corner.mtl", -50, 50, 0);
+LoadModel("models/nature/fence_corner.obj","models/nature/fence_corner.mtl",50, 50,  Math.PI / 2);
+LoadModel("models/nature/fence_corner.obj","models/nature/fence_corner.mtl",-50, -50,  -Math.PI / 2);
+LoadModel("models/nature/fence_corner.obj","models/nature/fence_corner.mtl",50, -50,  -Math.PI);
+
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",28, -49.3, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",16, -49.3, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-26, -49.3, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-38, -49.3, 0);
+
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",28, 50, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",16, 50, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-26, 50, 0);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-38, 50, 0);
+
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",50, 28, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",50, 16, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",50, -26, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",50, -38, -Math.PI / 2);
+
+
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-49.3, 28, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-49.3, 16, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-49.3, -26, -Math.PI / 2);
+LoadModel("models/nature/fence_strong.obj","models/nature/fence_strong.mtl",-49.3, -38, -Math.PI / 2);
+
 
 
 
