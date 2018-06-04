@@ -105,7 +105,7 @@ function getPlaneUnderneath(size) {
     var material_ground = new THREE.MeshPhongMaterial({
         color: 0x6423,
         displacementMap: displacement_map,
-        displacementScale: 40,
+        //displacementScale: 40,
         side: THREE.DoubleSide
     });
 
@@ -116,7 +116,7 @@ function getPlaneUnderneath(size) {
 
     // Rotate the plane 90 degree.
     mesh.rotation.x = Math.PI / 2;
-    //mesh.position.y += 0.5;
+    mesh.position.y -= 0.5;
 
     return mesh;
 }

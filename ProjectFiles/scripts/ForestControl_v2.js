@@ -126,7 +126,7 @@ function GenerateRandomModels(object,material,quantity)
   }
 }
 
-
+function SpringForest(){
         GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 30);
         GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
         GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 45);
@@ -134,6 +134,19 @@ function GenerateRandomModels(object,material,quantity)
         GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
 
+}
+
+function AutumnForest(){
+        GenerateRandomModels("models/nature/tree_oak_fall.obj", "models/nature/tree_oak_fall.mtl", 30);
+        GenerateRandomModels("models/nature/tree_plateau_fall.obj", "models/nature/tree_plateau_fall.mtl", 40);
+        GenerateRandomModels("models/nature/tree_simple_fall.obj", "models/nature/tree_simple_fall.mtl", 45);
+        GenerateRandomModels("models/nature/tree_thin_fall.obj", "models/nature/tree_thin_fall.mtl", 35);
+        GenerateRandomModels("models/nature/flower_blue3.obj", "models/nature/flower_blue3.mtl", 50);
+        GenerateRandomModels("models/nature/mushroom_redGroup.obj", "models/nature/mushroom_redGroup.mtl", 50);
+}
+
+AutumnForest();
+        
 
 function LoadModel(object,material, posx, posz, roty)
 {
