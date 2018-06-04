@@ -388,11 +388,8 @@ function setButtonEvents() {
 					scene.remove(group);
 					scene.remove(camera2);
 					//scene.add(camera);
-<<<<<<< HEAD
-
-=======
                     scene.fog = new THREE.FogExp2(0xffdcaa, 0.0003);
->>>>>>> master
+
 				}
 	});
 	

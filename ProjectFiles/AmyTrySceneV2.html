@@ -235,15 +235,14 @@
 function DisplayGUI() {
 
     var gui = new dat.GUI();
-<<<<<<< HEAD
 
     var lego = gui.addFolder('Lego brick');
-    lego.addColor(colorChanger, 'color');
+    lego.addColor(colorChanger, 'color').name('Color'); // Add it to change color with the gui panel
 
     var lightCtrl = gui.addFolder('Lighting');
-    lightCtrl.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-    lightCtrl.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
-    lightCtrl.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'intensity', 0, 1).name('Intensity').onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'inclination', 20, 50, 1).name('Inclination').onChange(updateSun);
+    lightCtrl.add(dirLightControl, 'azimuth', 0, 360, 1).name('Azimuth').onChange(updateSun);
 
     var scenery = gui.addFolder('Scenery');
     scenery.add(sceneryControl, 'season', ['Spring', 'Autumn']).name('Season').onChange(GenerateScenery);
@@ -253,6 +252,8 @@ function DisplayGUI() {
     lightCtrl.open();
     scenery.open();
 }
+
+
 
 function GenerateScenery() {
 
@@ -270,12 +271,7 @@ function GenerateScenery() {
 }
 
     DisplayGUI();
-=======
-    gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
-    gui.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
-    gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
-    gui.addColor(colorChanger, 'color');    // Add it to change color with the gui panel
->>>>>>> master
+
 
     /////////////
     /// 调参数 ///
