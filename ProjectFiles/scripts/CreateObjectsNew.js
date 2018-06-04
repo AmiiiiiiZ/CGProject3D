@@ -59,25 +59,30 @@ function getTransparentBottom() {
 // Create a plane square.
 function getPlane(size) {
     // The last two params are segments(vertices).
-    var geometry = new THREE.PlaneGeometry(size, size,size,size);
+    var geometry = new THREE.PlaneGeometry(size, size, size, size);
 
     var loader = new THREE.TextureLoader();
 
-    var texture = loader.load('img/grass.png', function(texture) {
-    	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    	texture.offset.set(0,0);
-    	texture.repeat.set(30,30);
+    var normal_map_ground = loader.load('img/629-normal.jpg', function (map) {
+        map.wrapT = map.wrapS = THREE.RepeatWrapping;
+        //map.wrapS = THREE.MirroredRepeatWrapping;
+        map.repeat = new THREE.Vector2(100,100);
     });
 
-    var material = new THREE.MeshPhongMaterial({
-        //color: 0xffeeee,
-        map: texture,
+
+    var material_ground = new THREE.MeshPhongMaterial({
+        color: 0x6423,
+        //color: 0x6642,
+        normalMap: normal_map_ground,
+        transparent: true,
+        opacity: 0.8,
         side: THREE.DoubleSide
+
     });
 
     var mesh = new THREE.Mesh(
         geometry,
-        material
+        material_ground
     );
 
     // Make the plane show the shadow of other objects.
@@ -85,6 +90,33 @@ function getPlane(size) {
 
     // Rotate the plane 90 degree.
     mesh.rotation.x = Math.PI / 2;
+
+    return mesh;
+}
+
+function getPlaneUnderneath(size) {
+    // The last two params are segments(vertices).
+    var geometry = new THREE.PlaneGeometry(size, size, size, size);
+
+    var loader = new THREE.TextureLoader();
+
+    var displacement_map = loader.load('img/displacementTerrain.jpg');
+
+    var material_ground = new THREE.MeshPhongMaterial({
+        color: 0x6423,
+        displacementMap: displacement_map,
+        displacementScale: 40,
+        side: THREE.DoubleSide
+    });
+
+    var mesh = new THREE.Mesh(
+        geometry,
+        material_ground
+    );
+
+    // Rotate the plane 90 degree.
+    mesh.rotation.x = Math.PI / 2;
+    mesh.position.y += 0.5;
 
     return mesh;
 }
@@ -97,19 +129,19 @@ function getSphere(size) {
     var material = new THREE.MeshPhongMaterial({
         color: 0x995522,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.6,
         side: THREE.DoubleSide
     });
 
     var _loader = new THREE.TextureLoader();
 
-    var texture = _loader.load('img/pixel2.jpg', function (texture) {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.offset.set(0, 0);
-        texture.repeat.set(30, 30);
-    });
+    // var texture = _loader.load('img/pixel2.jpg', function (texture) {
+    //     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    //     texture.offset.set(0, 0);
+    //     texture.repeat.set(30, 30);
+    // });
 
-    material.map = texture;
+    // material.map = texture;
 
     var mesh = new THREE.Mesh(
         geometry,

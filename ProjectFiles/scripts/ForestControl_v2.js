@@ -62,7 +62,7 @@
                     previousSelection.position.x =pos.x;
                     previousSelection.position.z =pos.z;
               }
-
+          previousSelection.position.y = -0.5;
           // bounding box follows the new position of the object
           boundingBox.update();
           console.log(pos.x + "," + pos.y + "," + pos.z);
@@ -96,7 +96,9 @@ function GenerateRandomModels(object,material,quantity)
 
               child.castShadow = true;
               child.receiveShadow = true;
+
               child.geometry.computeVertexNormals();
+              child.material.shading = THREE.SmoothShading;
               child.position.x = Math.random() * 300 - 150 ;
               child.position.z = Math.random() * 300 - 150 ;
               child.position.y -= 0.5;
@@ -133,11 +135,6 @@ function GenerateRandomModels(object,material,quantity)
         GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
 
-        // function AddFog() {
-              
-        //       fogColor = new THREE.Color(0xffffff);
-        //       scene.background = fogColor;
-        //       scene.fog = new THREE.Fog(fogColor, 0.0025, 20);
-        // }
+
 
 

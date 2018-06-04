@@ -17,7 +17,7 @@ function useMaterial(color, collection, transparency) {
         material = new THREE.MeshToonMaterial({
             color: color,
             transparent: true,
-            opacity: 0.9,
+            //opacity: 0.9,
             flatShading: true
         });
         material.normalMap = loader.load('img/legoNormal2.png');

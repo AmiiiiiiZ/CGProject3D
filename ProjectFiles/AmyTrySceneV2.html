@@ -134,7 +134,9 @@
 
     <!-- This script section is where we add THREE.JS code. -->
     <script>
-        scene.fog = new THREE.FogExp2(0xffffff, 0.003);
+
+        // Add fog to the scene
+        scene.fog = new THREE.FogExp2(0xffdcaa, 0.0001);
 
         // Use the clock to calculate time elapse.
         var clock = new THREE.Clock();
@@ -152,12 +154,11 @@
         // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
 
         ground.position.y = -0.50;
-        ground.material.color.setHex(0x88aa88);
+
+        //ground.material.color.setHex(0x88aa88);
         ground.name = 'ground';
         scene.add(ground);
 
-        // var fogColor = new THREE.Color(0xffffff);
-        // scene.fog = new THREE.FogExp2(fogColor, 0.01);
 
         // Used to update block color
         var Color = function (object) {
@@ -179,8 +180,15 @@
 
         colorChanger = new Color(box);
 
-            var underground = getSphere(300);
-            scene.add(underground);
+           
+        //////////////////////////////
+        /// Add underground layers ///
+        /////////////////////////////
+        var underground = getSphere(300);
+        scene.add(underground);
+        var underground_plane = getPlaneUnderneath(300);
+        underground_plane.name = 'ground';
+        scene.add(underground_plane);
 
 
         var bone = getBoxBone();
