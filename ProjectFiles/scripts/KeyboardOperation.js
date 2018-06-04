@@ -2,8 +2,8 @@
 // An array of keys we have pressed.
 var keyboard = {};
 
+// Boundry of the valid area to set block.
 var boundry = 50;
-
 
 
 // Do this when key down
@@ -11,22 +11,20 @@ function keyDown(event){
     keyboard[event.keyCode] = true;
 
 
-    if (keyboard[65]) { // A key
+    if (keyboard[65]) { // A key - left
 
         if (box.position.x > -boundry) {
             box.position.x -= 1;
             updateBlockPosition(box);
         }
-
     }
 
-    if (keyboard[68]) { // D key
+    if (keyboard[68]) { // D key - right
 
         if (box.position.x < boundry) {
             box.position.x += 1;
             updateBlockPosition(box);
         }
-
     }
 
     if (keyboard[82]) { // R - forward
@@ -34,9 +32,7 @@ function keyDown(event){
         if (box.position.z > -boundry) {
             box.position.z -= 1;
             updateBlockPosition(box);
-
         }
-
     }
 
     if (keyboard[70]) { // F - backward
@@ -44,9 +40,7 @@ function keyDown(event){
         if (box.position.z < boundry) {
             box.position.z += 1;
             updateBlockPosition(box);
-
         }
-
     }
 
     if (keyboard[87]) { // W key - raise
@@ -54,9 +48,7 @@ function keyDown(event){
         if (box.position.y < boundry) {
             box.position.y += 1;
             updateBlockPosition(box);
-
         }
-
     }
 
     if (keyboard[83]) { // S key - fall
@@ -64,14 +56,7 @@ function keyDown(event){
         if (box.position.y > 0) {
             box.position.y -= 1;
             updateBlockPosition(box);
-
         }
-
-    }
-
-    if (keyboard[32]) { // spacebar - delete the block
-
-        
     }
 
     if (keyboard[13] && !hiding) { // enter - set the block here.
@@ -85,7 +70,6 @@ function keyDown(event){
 
             console.log("cannot put box here!");
         }
-
     }
 	
 	if (keyboard[16]) { // shiftbar - car: turn on/off the headlight.
@@ -98,9 +82,10 @@ function keyDown(event){
 			}
 	}	
 
+
     switch (event.keyCode) {
 
-
+        // Keys to move the car.
         case 73: // i
             moveForward = true;
             group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
@@ -121,7 +106,29 @@ function keyDown(event){
             group.getObjectByName("back1").material.color = new THREE.Color(0.5, 0, 0);
             break;
 
+        case 86: // V - Fall the block
+            makeBlockFall();
+            break;
+
+        case 32: // Space Bar - Delete the block
+            removeBlock();
+            break;
+
     }
+}
+
+// Function to remove the selected block from scene.
+function removeBlock() {
+    if (selectedObjHere) {
+        var key = previousObj.position.x.toString() + "-" + previousObj.position.y.toString() + "-" + previousObj.position.z.toString();
+
+        blockCollection[key] = false;
+        scene.remove(previousObj);
+        previousObj = null;
+
+        bone.visible = false;
+    }
+    selectedObjHere = false;
 }
 
 // Do this when key up
@@ -134,10 +141,21 @@ function keyUp(event){
 window.addEventListener('keydown', keyDown);
 window.addEventListener('keyup', keyUp);
 
+// The variable to see if the control box is hidden.
 var hiding = false;
 
+
+// Set events to button.
 function setButtonEvents() {
 
+    // Make the selected block fall.
+    $("#fall").mousedown(function () {
+
+        makeBlockFall();
+        console.log("panel clicked!");
+    });
+
+    // Avoid setting the control block under the control panel when we click the panel.
     $("#controls").mousedown(function () {
         
         clickToMoveControlStep = 1;
@@ -145,6 +163,7 @@ function setButtonEvents() {
         console.log("panel clicked!");
     });
 
+    // Set the block here.
     $("#set-box").mousedown(function () {
         // Check if the box can set here.
         if (canSetBlockHere(box.position.x, box.position.y, box.position.z) && !hiding) {
@@ -158,6 +177,7 @@ function setButtonEvents() {
         console.log("set box button clicked!");
     });
 
+    // Move the virtual box by 1 unit. The following 6 are different directions.
     $("#up").mousedown(function () {
         if (box.position.y < boundry) {
             box.position.y += 1;
@@ -233,7 +253,7 @@ function setButtonEvents() {
 
     // Change color of the controlled box
     $("#color").mousedown(function () {
-        if (selectedObj) {
+        if (selectedObjHere) {
             var color = previousObj.material.color.getHex();
             colorChanger.color = color;
         }
@@ -259,16 +279,8 @@ function setButtonEvents() {
 
     // Remove the selected block
     $("#remove").mousedown(function () {
-        if (selectedObj) {
-            var key = previousObj.position.x.toString() + "-" + previousObj.position.y.toString() + "-" + previousObj.position.z.toString();
 
-            blockCollection[key] = false;
-            scene.remove(previousObj);
-            previousObj = null;
-
-            bone.visible = false;
-        }
-        selectedObj = false;
+        removeBlock();
         console.log("button clicked!");
     });
 
@@ -288,7 +300,7 @@ function setButtonEvents() {
         }
         
         previousObj = null;
-        selectedObj = false;
+        selectedObjHere = false;
         bone.visible = false;
         console.log("button clicked!");
     });
@@ -376,7 +388,11 @@ function setButtonEvents() {
 					scene.remove(group);
 					scene.remove(camera2);
 					//scene.add(camera);
+<<<<<<< HEAD
 
+=======
+                    scene.fog = new THREE.FogExp2(0xffdcaa, 0.0003);
+>>>>>>> master
 				}
 	});
 	
@@ -384,14 +400,6 @@ function setButtonEvents() {
 	$("#screenshot").mousedown(function () {
 		saveAsImage();
 	});
-}
-
-// Load previous building from a file. Finish the function of loading the selected file dynamically later.
-function loadBoxes(file) {
-
-    // Information needed: X,Y,Z, color
-
-
 }
 
 
@@ -412,14 +420,11 @@ function showControlBox() {
     ball.visible = true;
     bottomBlock.visible = true;
     hiding = false;
-
-    // Also make camera look at the showing block.
-
 }
 
 
-var raycaster = new THREE.Raycaster();
-var selectedObj = false;
+var raycasterAnother = new THREE.Raycaster();
+var selectedObjHere = false;
 var previousObj = null;
 
 // Switch to the mode of using mouse to set the box at the pointed position.
@@ -429,14 +434,14 @@ function onDocumentMouseDown(event) {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
+    raycasterAnother.setFromCamera(mouse, camera);
 
-    var intersects = raycaster.intersectObjects(scene.children, false);
+    var intersects = raycasterAnother.intersectObjects(scene.children, false);
 
-    // If selected the non-controlled box, 
-    // 
+    // If selected a box we have set here, display a frame over the box to show the selection. 
     if (intersects.length > 0 && intersects[0].object.name == 'block') {
 
+        // If the mode now is that we can use click to move a control block here, we just move the virtual block to the face of the selected block.
         if (clickToMoveControl) {
             if (clickToMoveControlStep > 1) {
                 var obj = intersects[0].object.position;
@@ -456,6 +461,7 @@ function onDocumentMouseDown(event) {
             }
 
         }
+        // If the mode now had disabled using mouse to move the control box, we will show the valid selection.
         else {
 
             console.log("object selected!");
@@ -471,27 +477,28 @@ function onDocumentMouseDown(event) {
             var normal = intersects[0].face.normal;
             console.log("normal x: " + normal.x + " y: " + normal.y + " z: " + normal.z);
 
-            selectedObj = true;
+            selectedObjHere = true;
         }
     }
+    // If the frame over a block is selected, the click will just remove it and the previous selection is removed.
     else if (intersects.length > 0 && intersects[0].object.name == 'bone') {
 
         bone.visible = false;
-        selectedObj = false;
+        selectedObjHere = false;
         previousObj = null;
         console.log("cancel selection!");
     }
+    // If the ground is selected, when the mode is that we can move 
     else if (intersects.length > 0 && intersects[0].object.name == 'ground') {
 
         if (clickToMoveControl && clickToMoveControlStep > 1) {
             var x = Math.round(intersects[0].point.x);
-            var y = Math.round(intersects[0].point.y + 0.5);
             var z = Math.round(intersects[0].point.z);
 
-            if (x > -boundry && x < boundry && y < boundry && z > -boundry && z < boundry ) {
+            if (x > -boundry && x < boundry && z > -boundry && z < boundry ) {
 
                 box.position.x = x;
-                box.position.y = y;
+                box.position.y = 0;
                 box.position.z = z;
             }
 
@@ -503,7 +510,6 @@ function onDocumentMouseDown(event) {
 
         console.log("ground point x: " + Math.round(intersects[0].point.x) + " y: " + Math.round(intersects[0].point.y + 0.5) + " z: " + Math.round(intersects[0].point.z));
     }
-
 }
 
 

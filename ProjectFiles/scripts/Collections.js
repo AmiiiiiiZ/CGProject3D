@@ -7,13 +7,13 @@ var colorCollection = new Object();
 function useMaterial(color, collection, transparency) {
 
     var material = null;
-    // When the color is old
+    // When the color is old, use old material to save memory.
     if (collection[color] != null) {
         material = collection[color];
         console.log("old material used!");
     }
     else {
-        // When the color is new 
+        // When the color is new, create a new material to hold this color. 
         material = new THREE.MeshToonMaterial({
             color: color,
             transparent: true,
@@ -28,7 +28,7 @@ function useMaterial(color, collection, transparency) {
     return material;
 }
 
-
+// Funtion to move the objects related to one block when we move it.
 function updateBlockPosition(object) {
 
     bottomBlock.position.x = object.position.x;
@@ -44,8 +44,6 @@ function updateBlockPosition(object) {
 // A collection of blocks existing in the scene. To test if there are blocks under the place 
 var blockCollection = new Object();
 
-
-
 // A function to validate if a new block can be set here.
 function canSetBlockHere(x, y, z) {
 
@@ -58,8 +56,6 @@ function canSetBlockHere(x, y, z) {
         return true;
     }
 }
-
-
 
 // A function to keep the location of the block newly set there.
 function setBlockHere(x, y, z) {
@@ -80,59 +76,45 @@ function setBlockHere(x, y, z) {
 }
 
 
+// Collection of blocks which can fall
+var fallCollection = new Object();
+var yCollection = new Object();
 
+// Function to make the selected block fall.
+function makeBlockFall() {
 
+    if (selectedObjHere) {
+        var x = previousObj.position.x;
+        var y = previousObj.position.y;
+        var z = previousObj.position.z;
+        var originalKey = x.toString() + "-" + y.toString() + "-" + z.toString();
 
+        var canFall = false;
+        var finalY = 0;
+        for (var i = y - 1; i >= 0; i--) {
 
+            var tempKey = x.toString() + "-" + i.toString() + "-" + z.toString();
+            if (!blockCollection[tempKey]) {
+                canFall = true;
+                finalY = i;
+            }
+            else {
+                break;
+            }
+        }
 
-var loader = new THREE.PLYLoader();
+        if (canFall) {
+            var newKey = x.toString() + "-" + finalY.toString() + "-" + z.toString();
+            blockCollection[originalKey] = false;
+            fallCollection[newKey] = previousObj;
+            yCollection[newKey] = finalY;
+            blockCollection[newKey] = true;
 
-// Make the fixed model of block to reuse. 
-var blockMesh = null;
-var blockGeometry = null;
-
-// Make the material for the block to reuse.
-var blockMaterial = new THREE.MeshPhongMaterial();
-
-// Load the model and store its geometry and mesh.
-loader.load('models/singleBlock.ply', function (geometry) {
-
-    geometry.computeVertexNormals();
-    geometry.computeBoundingBox();
-
-    var center = geometry.boundingBox.getCenter();
-    var size = geometry.boundingBox.getSize();
-
-    var sca = new THREE.Matrix4();
-    var tra = new THREE.Matrix4();
-
-    sca.makeScale(3.5 / size.length(), 2.63 / size.length(), 3.5 / size.length());
-    tra.makeTranslation(-center.x, -center.y + 0.13, -center.z);
-
-    blockMesh = new THREE.Mesh(geometry, blockMaterial);
-    blockGeometry = geometry;
-
-    blockMesh.applyMatrix(tra);
-    blockMesh.applyMatrix(sca);
-    blockMesh.name = "loaded_block";
-
-    blockMesh.castShadow = true;
-
-});
-
-// Create a block with the specified material and the 
-function getBlock(color) {
-
-    blockMesh.material.color.setHex(color);
-
-    // Make a new block in the scene.
-    var mesh = blockMesh;
-
-
-    // Add the object to the scene.
-    scene.add(mesh);
-
-    return mesh;
+            bone.visible = false;
+            selectedObjHere = false;
+            previousObj = null;
+        }
+    }
 }
 
 

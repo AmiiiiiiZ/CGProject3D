@@ -1,11 +1,10 @@
 
-
+// Make a cube for all blocks we will create.
 var boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 
 // Create a box cube.
 function getBox(color) {
 
-    // Phong material can interact with light.
 	var mesh = new THREE.Mesh(
         boxGeometry,
         useMaterial(color, colorCollection, false) 
@@ -23,7 +22,6 @@ var boxBoneMaterial = new THREE.MeshBasicMaterial();
 // Create a box cube frame.
 function getBoxBone() {
 
-    // Phong material can interact with light.
     var mesh = new THREE.Mesh(
         boxBoneGeometry,
         boxBoneMaterial
@@ -36,7 +34,7 @@ function getBoxBone() {
 }
 
 
-// Make a transparent block
+// Make a square at the bottom of a block
 function getTransparentBottom() {
 
     var hintGeometry = new THREE.PlaneGeometry(1, 1);

@@ -17,11 +17,10 @@
     <script src="js/dat.gui.min.js"></script>
     <!--include the stats.js library-->
     <script src="js/stats.js"></script>
-
+    <!--include the model loder libraries-->
     <script src="js/PLYLoader.js"></script>
-
-    <script src="js/MTLLoader.js" ></script>
-    <script src="js/OBJLoader.js" ></script>
+    <script src="js/MTLLoader.js"></script>
+    <script src="js/OBJLoader.js"></script>
 
     <script src="js/jquery.min.js"></script>
 
@@ -36,13 +35,11 @@
             Click your mouse to start moving the box!
             <br />
             left   click to rotate, middle click to zoom,  right  click to pan
-
         </p>
-
     </div>
 
     
-        <!-- Control panel to interact with the scene -->
+    <!-- Control panel to interact with the scene -->
     <div id="controls">
         Control Panel
         <br />
@@ -70,19 +67,20 @@
         <br />
         Selected Block:
         <button id="color">Pick Color</button>
-        <button id="remove">Remove Block</button>
-        <button id="remove-all">Remove All Blocks</button>
+        <button id="fall">Block Fall (V)</button>
+        <button id="remove">Remove Block (D)</button>
 
         <br />
         <button id="save">Save Your Work!</button>
 
         <button id="load">Load Previous Work!</button>
-		
-		<br/>
-		
-		<button id="adventure">Start Adventure!</button>
-		<p>Move Car: <br />Forward(i),Backward(k),<br />Left(j),Right(l)<br />Turn On/Off headlight(Shift)</p>
-		<button id="screenshot">Screen Shot</button>
+        <button id="remove-all">Clean Blocks</button>
+
+        <br />
+
+        <button id="adventure">Start Adventure!</button>
+        <p>Move Car: <br />Forward(i),Backward(k),<br />Left(j),Right(l)<br />Turn On/Off headlight(Shift)</p>
+        <button id="screenshot">Screen Shot</button>
         <br />
 
 
@@ -95,9 +93,6 @@
         // Monitor the performance.
         var stats = new Stats();
         document.body.appendChild(stats.dom);
-
-        // Create interaction control panel.
-     //   var gui = new dat.GUI();
 
         var ratio = window.innerWidth / window.innerHeight;
         var camera = new THREE.PerspectiveCamera(45, ratio, 1, 5000);
@@ -148,11 +143,9 @@
 
         // Make texture for objects.
         var loader = new THREE.TextureLoader();
-
+        
+        // Create a plane as the ground.
         var ground = getPlane(301);
-
-        // Create a plane to see the grid. Always use odd number, ohterwise the position is not accurate.
-
         ground.position.y = -0.50;
 
         //ground.material.color.setHex(0x88aa88);
@@ -162,7 +155,7 @@
 
         // Used to update block color
         var Color = function (object) {
-            this.color = 0xee6666; // RGB with alpha
+            this.color = 0xee6666; // RGB 
 
             // Define render logic ...
             object.material.color.setHex(this.color);
@@ -172,11 +165,11 @@
             }
         };
 
+        // Create the virtual box to control.
         var box = getBox(0x000000);
         box.name = 'control';
 
         scene.add(box);
-
 
         colorChanger = new Color(box);
 
@@ -242,6 +235,7 @@
 function DisplayGUI() {
 
     var gui = new dat.GUI();
+<<<<<<< HEAD
 
     var lego = gui.addFolder('Lego brick');
     lego.addColor(colorChanger, 'color');
@@ -276,6 +270,12 @@ function GenerateScenery() {
 }
 
     DisplayGUI();
+=======
+    gui.add(dirLightControl, 'intensity', 0, 1).onChange(updateSun);
+    gui.add(dirLightControl, 'inclination', 20, 50, 1).onChange(updateSun);
+    gui.add(dirLightControl, 'azimuth', 0, 360, 1).onChange(updateSun);
+    gui.addColor(colorChanger, 'color');    // Add it to change color with the gui panel
+>>>>>>> master
 
     /////////////
     /// 调参数 ///
@@ -296,13 +296,13 @@ function GenerateScenery() {
 	    
 
 
-
+        // Make a square at the bottom of the control box.
         var bottomBlock = getTransparentBottom();
         bottomBlock.position.y = -0.49;
         scene.add(bottomBlock);
         bottomBlock.name = 'bottom';
 
-        // Make a sphere/cone to point out the control box.
+        // Make a sphere/cone to point out the control box. (It used to be a sphere so for convenience its name is unchanged.)
         var ball = getCone(0.3);
         scene.add(ball);
 
@@ -361,6 +361,28 @@ function GenerateScenery() {
             // Update the position of the pointer(which was a ball, but now a cone) of the control box
             ball.position.y = box.position.y + 2 + Math.sin(timeElapsed * 2) / 2;
             ball.rotation.y -= 0.05;
+
+            // Fall the boxes
+            for (var key in fallCollection) {
+
+                if (previousObj == fallCollection[key]) {
+                    bone.visible = false;
+                    selectedObjHere = false;
+                    previousObj = null;
+                }
+
+                fallCollection[key].position.y -= 0.01;
+
+                if (fallCollection[key].position.y - yCollection[key] < 0.02) {
+                    fallCollection[key].position.y = yCollection[key];
+                    delete fallCollection[key];
+                    delete yCollection[key];
+                    console.log("Falling stop!");
+                }
+
+            }
+
+
 			
 		// Car Animation
 		var delta = clock2.getDelta(); // seconds.
