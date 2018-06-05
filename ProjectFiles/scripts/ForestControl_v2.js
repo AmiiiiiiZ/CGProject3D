@@ -3,7 +3,7 @@
     var raycaster = new THREE.Raycaster();
     var selectedObj = false;
     var boundingBox, previousSelection;
-    var limit = 55;
+    var limit = 60;
 
     function onDocumentMouseDown(event)
     {
@@ -99,8 +99,8 @@ function GenerateRandomModels(object,material,quantity)
               child.receiveShadow = true;
 
               child.geometry.computeVertexNormals();
-              child.position.x = Math.random() * 300 - 150 ;
-              child.position.z = Math.random() * 300 - 150 ;
+              child.position.x = Math.random() * 280 - 140 ;
+              child.position.z = Math.random() * 280 - 140 ;
               child.position.y -= 0.5;
               child.name = "nature";
 
@@ -139,12 +139,23 @@ function RemoveForest(){
 }
 
 function SpringForest(){
-        GenerateRandomModels("models/nature/tree_plateau.obj", "models/nature/tree_plateau.mtl", 30);
-        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
+        GenerateRandomModels("models/nature/tree_plateau_dark.obj", "models/nature/tree_plateau_dark.mtl", 30);
+        GenerateRandomModels("models/nature/tree_default_dark.obj", "models/nature/tree_default_dark.mtl", 40);
         GenerateRandomModels("models/nature/tree_thin_dark.obj", "models/nature/tree_thin_dark.mtl", 45);
         GenerateRandomModels("models/nature/tree_pine_short_detailed.obj", "models/nature/tree_pine_short_detailed.mtl", 35);
         GenerateRandomModels("models/nature/flower_red3.obj", "models/nature/flower_red3.mtl", 50);
         GenerateRandomModels("models/nature/grass.obj", "models/nature/grass.mtl", 50);
+}
+
+function SummerForest(){
+        GenerateRandomModels("models/nature/tree_default.obj", "models/nature/tree_default.mtl", 40);
+        GenerateRandomModels("models/nature/tree_thin.obj", "models/nature/tree_thin.mtl", 45);
+        GenerateRandomModels("models/nature/tent_detailedOpen.obj", "models/nature/tent_detailedOpen.mtl", 1);
+        GenerateRandomModels("models/nature/flower_beige1.obj", "models/nature/flower_beige1.mtl", 50);
+        GenerateRandomModels("models/nature/plant_bushDetailed.obj", "models/nature/plant_bushDetailed.mtl", 40);
+        GenerateRandomModels("models/nature/rock_smallTop1.obj", "models/nature/rock_smallTop1.mtl", 10);
+        GenerateRandomModels("models/nature/mushroom_redGroup.obj", "models/nature/mushroom_redGroup.mtl", 40);
+
 }
 
 function AutumnForest(){
@@ -154,6 +165,16 @@ function AutumnForest(){
         GenerateRandomModels("models/nature/tree_thin_fall.obj", "models/nature/tree_thin_fall.mtl", 35);
         GenerateRandomModels("models/nature/flower_blue3.obj", "models/nature/flower_blue3.mtl", 50);
         GenerateRandomModels("models/nature/mushroom_redGroup.obj", "models/nature/mushroom_redGroup.mtl", 50);
+}
+
+function WinterForest(){
+        GenerateRandomModels("models/nature/treePineSnowRound.obj", "models/nature/treePineSnowRound.mtl", 40);
+        GenerateRandomModels("models/nature/treePineSnowed.obj", "models/nature/treePineSnowed.mtl", 70);
+        GenerateRandomModels("models/nature/treePineSnow.obj", "models/nature/treePineSnow.mtl", 30);
+        GenerateRandomModels("models/nature/snowmanFancy.obj", "models/nature/snowmanFancy.mtl", 10);
+        GenerateRandomModels("models/nature/rockFormationMedium.obj", "models/nature/rockFormationMedium.mtl", 2);
+        GenerateRandomModels("models/nature/rockFormationSmall.obj", "models/nature/rockFormationSmall.mtl", 2);
+        GenerateRandomModels("models/nature/rockFormationLarge.obj", "models/nature/rockFormationLarge.mtl", 1);
 }
        
 

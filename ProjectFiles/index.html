@@ -77,7 +77,6 @@
 
 
 
-        Bao Trang Bui
 
         Mi Zhou
 
@@ -85,13 +84,15 @@
 
         Yuan Yuan
 
+        Bao Trang Bui
+
 
 
 
         ------------------------------
         <span class="small">
-            All models are from the Nature Kit (1.0)
-            Created/distributed by Kenney (www.kenney.nl)
+            All models are created/distributed
+            by Kenney (www.kenney.nl)
         </span>
         ------------------------------
 
@@ -221,8 +222,9 @@
         underground_plane.name = 'ground';
         scene.add(underground_plane);
 
+        // By Default, start with spring scenery
         SpringForest();
-        //AutumnForest();
+
 
 
         var bone = getBoxBone();
@@ -236,7 +238,7 @@
         var ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.2);
         scene.add(ambientLight);
 
-        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.5);
+        var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.05);
         hemiLight.position.set(0, 200, 0);
         scene.add(hemiLight);
 
@@ -286,7 +288,7 @@
             lightCtrl.addColor(dirLightControl, 'color').onChange(updateSun);
 
             var scenery = gui.addFolder('Scenery');
-            scenery.add(sceneryControl, 'season', ['Spring', 'Autumn']).name('Season').onChange(GenerateScenery);
+            scenery.add(sceneryControl, 'season', ['Spring', 'Summer', 'Autumn', 'Winter']).name('Season').onChange(GenerateScenery);
 
             gui.open();
             lego.open();
@@ -303,13 +305,26 @@
                 ground.material.color.setHex(0x6423);
                 underground_plane.material.color.setHex(0x6423);
 
+            } else if (sceneryControl.season == "Summer") {
+
+                RemoveForest();
+                SummerForest();
+                ground.material.color.setHex(0x157800);
+                underground_plane.material.color.setHex(0x157800);
+
             } else if (sceneryControl.season == "Autumn") {
 
                 RemoveForest();
                 AutumnForest();
-                //ground.material.color.setHex(0x7a6400);
                 ground.material.color.setHex(0x4b5500);
                 underground_plane.material.color.setHex(0x4b5500);
+
+            } else if (sceneryControl.season == "Winter") {
+
+                RemoveForest();
+                WinterForest();
+                ground.material.color.setHex(0xffffff);
+                underground_plane.material.color.setHex(0xffffff);
 
             }
         }

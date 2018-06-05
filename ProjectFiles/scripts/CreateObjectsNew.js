@@ -71,9 +71,10 @@ function getPlane(size) {
     var material_ground = new THREE.MeshPhongMaterial({
         color: 0x6423, // spring
         //color: 0x6642,
+        //color: 0x4ba000,
         normalMap: normal_map_ground,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.8,
         side: THREE.DoubleSide
 
     });
@@ -103,7 +104,7 @@ function getPlaneUnderneath(size) {
     var material_ground = new THREE.MeshPhongMaterial({
         color: 0x6423, // spring
         displacementMap: displacement_map,
-        displacementScale: 40,
+        //displacementScale: 40,
         side: THREE.DoubleSide
     });
 
@@ -162,6 +163,8 @@ function getCone(size) {
 // Create a point light like a light bulb.
 function getPointLight(intensity) {
     var light = new THREE.PointLight('rgb(255,220,180)', intensity);
+
+
 
     light.position.x = 10;
     light.position.z = 20;
