@@ -7,22 +7,40 @@ body {
 	margin: 0px;
 	overflow: hidden;
 }
-#info {
-    position: absolute;
-    top: 10px;
-    left:200px;
-    text-align: center;
-    color: #0f0;
-    margin: auto;
-}
-#info p {
-    background-color: #000;
-}
+
 canvas {
 	width: 100%; 
 	height: 100%;
 }
 
+
+#panel {
+    position: absolute;
+    left:100px;
+}
+
+#middle {
+    text-align: center;
+    background-color: black;
+    color: #0f0;
+    border: solid 1px #0f0;
+    white-space: pre-line;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    padding:20px;
+    border-radius:10px;
+    z-index:100;
+}
+
+.small{
+    font-size:x-small;
+}
 
 #controls {
     position: absolute;

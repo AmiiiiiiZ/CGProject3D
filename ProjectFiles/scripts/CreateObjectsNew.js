@@ -178,52 +178,8 @@ function getPointLight(intensity) {
 }
 
 
-// Create a spot light like at stage.
-function getSpotLight(intensity) {
-    var light = new THREE.SpotLight('rgb(255,220,180)', intensity);
-
-    // Make the light have shadow effect.
-    light.castShadow = true;
-
-    light.position.x = 100;
-    light.position.z = 100;
-    light.position.y = 100;
-
-    light.shadow.bias = 0.001;  // Eliminate gliches of the shadow.
-    light.shadow.mapSize.width = 2048;  // Make the shadow clearer. Default is 1024.
-    light.shadow.mapSize.height = 2048;
-
-    return light;
-}
-
-// Create a directional light like a sun far away.
-function getDirectionalLight(intensity) {
-    var light = new THREE.DirectionalLight(0xffffff, intensity);
-
-    // Make the light have shadow effect.
-    light.castShadow = true;
-    light.position.x = 100;
-    light.position.z = 100;
-    light.position.y = 100;
 
 
-    // Make the shadow field larger.
-    light.shadow.camera.left = -100;
-    light.shadow.camera.bottom = -100;
-    light.shadow.camera.right = 100;
-    light.shadow.camera.top = 100;
-
-    return light;
-}
-
-// Create ambient light. Used to create uniform effect (reflection) on all objects.
-function getAmbientLight(intensity) {
-    var light = new THREE.AmbientLight('rgb(30,30,30)', intensity);
-
-    // Ambient light makes no shadow
-
-    return light;
-}
 
 
 // Create a car
