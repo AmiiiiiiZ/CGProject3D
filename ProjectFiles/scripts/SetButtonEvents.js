@@ -208,7 +208,7 @@ function setButtonEvents() {
 
                 if (canSetBlockHere(x, y, z)) {
 
-                    var color = read.boxes[i].color;
+                    var color = read.boxes[i].color - 0;
 
                     var key = x.toString() + "-" + y.toString() + "-" + z.toString();
 
