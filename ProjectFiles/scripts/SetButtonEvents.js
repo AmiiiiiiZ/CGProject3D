@@ -262,8 +262,8 @@ function setButtonEvents() {
     });
 
     // Close credit
-    $("#close").mousedown(function () {
-
+    $("#close").mouseup(function () {
+        $("#cover").hide();
         $("#middle").hide();
     });
 }
