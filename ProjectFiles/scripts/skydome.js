@@ -20,7 +20,7 @@ var skyDomeTextureLoader = new THREE.TextureLoader();
 
 var skyDomeGeometry = new THREE.SphereGeometry(3000, 60, 40);
 var uniforms = {
-texture: { type: 't', value: THREE.ImageUtils.loadTexture('skytest.png') }
+texture: { type: 't', value: THREE.ImageUtils.loadTexture('sky.jpg') }
 };
 
 var skyDomeMaterial = new THREE.ShaderMaterial( {
