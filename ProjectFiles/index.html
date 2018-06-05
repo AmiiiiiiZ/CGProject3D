@@ -148,9 +148,9 @@
         varying vec2 vUV;
 
         void main() {
-        vUV = uv;
-        vec4 pos = vec4(position, 1.0);
-        gl_Position = projectionMatrix * modelViewMatrix * pos;
+            vUV = uv;
+            vec4 pos = vec4(position, 1.0);
+            gl_Position = projectionMatrix * modelViewMatrix * pos;
         }
     </script>
 
@@ -159,13 +159,31 @@
         varying vec2 vUV;
 
         void main() {
-        vec4 sample = texture2D(texture, vUV);
-        gl_FragColor = vec4(sample.xyz, sample.w);
+            vec4 sample = texture2D(texture, vUV);
+            gl_FragColor = vec4(sample.xyz, sample.w);
         }
-
     </script>
 
-    <script src="scripts/skydome.js"></script>
+    <script>
+        var skyDomeTextureLoader = new THREE.TextureLoader();
+
+        var skyDomeGeometry = new THREE.SphereGeometry(3000, 50, 50);
+        var uniforms = {
+            texture: { type: 't', value: THREE.ImageUtils.loadTexture('img/skydome.jpg') }
+        };
+
+        var skyDomeMaterial = new THREE.ShaderMaterial( {
+            uniforms:       uniforms,
+            vertexShader:   document.getElementById('sky-vertex').textContent,
+            fragmentShader: document.getElementById('sky-fragment').textContent
+        } );
+
+        var skyDome = new THREE.Mesh(skyDomeGeometry, skyDomeMaterial);
+        skyDome.scale.set(-1, 1, 1);
+        skyDome.eulerOrder = 'XZY';
+        skyDome.renderDepth = 1000.0;
+        scene.add(skyDome);
+    </script>
 
 
     <!-- This script section is where we add THREE.JS code. -->
@@ -267,7 +285,7 @@
         var dirLightControl = new function () {
             this.intensity = 1;
             this.inclination = 0.2;
-            this.azimuth = 0;
+            this.azimuth = 0.15;
             this.color = 0xFFFFFF;
         };
 
