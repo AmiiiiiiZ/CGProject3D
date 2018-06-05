@@ -17,9 +17,9 @@
 
 			------------------------------
 
-		All models are from the Nature Kit (1.0)
+		All models are created/distributed
 
-		Created/distributed by Kenney (www.kenney.nl)
+		 by Kenney (www.kenney.nl)
 
 
 			------------------------------

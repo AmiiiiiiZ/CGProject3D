@@ -3,7 +3,7 @@
     var raycaster = new THREE.Raycaster();
     var selectedObj = false;
     var boundingBox, previousSelection;
-    var limit = 60;
+    var limit = 55;
 
     function onDocumentMouseDown(event)
     {

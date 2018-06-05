@@ -300,7 +300,7 @@
             var gui = new dat.GUI();
 
             var lego = gui.addFolder('Lego brick');
-            lego.addColor(colorChanger, 'color').name('Color'); // Add it to change color with the gui panel
+            lego.addColor(colorChanger, 'color'); // Add it to change color with the gui panel
 
             var lightCtrl = gui.addFolder('Lighting');
             lightCtrl.add(dirLightControl, 'intensity', 0, 1, 0.1).onChange(updateSun);
@@ -309,7 +309,7 @@
             lightCtrl.addColor(dirLightControl, 'color').onChange(updateSun);
 
             var scenery = gui.addFolder('Scenery');
-            scenery.add(sceneryControl, 'season', ['Spring', 'Summer', 'Autumn', 'Winter']).name('Season').onChange(GenerateScenery);
+            scenery.add(sceneryControl, 'season', ['Spring', 'Summer', 'Autumn', 'Winter']).onChange(GenerateScenery);
 
             gui.open();
             lego.open();
@@ -317,6 +317,8 @@
             scenery.open();
         }
 
+
+        // Control scenery based on user's selection in drop down list
         function GenerateScenery() {
 
             if (sceneryControl.season == "Spring") {
@@ -330,8 +332,8 @@
 
                 RemoveForest();
                 SummerForest();
-                ground.material.color.setHex(0x157800);
-                underground_plane.material.color.setHex(0x157800);
+                ground.material.color.setHex(0x4ba000);
+                underground_plane.material.color.setHex(0x4ba000);
 
             } else if (sceneryControl.season == "Autumn") {
 
