@@ -124,15 +124,12 @@ function getPlaneUnderneath(size) {
 function getSphere(size) {
     var geometry = new THREE.BoxGeometry(size,size/5, size);
 
-    // Basic material does not interact with light. Its color is fixed without light.
     var material = new THREE.MeshPhongMaterial({
         color: 0x995522,
         transparent: true,
         opacity: 0.6,
         side: THREE.DoubleSide
     });
-
-    var _loader = new THREE.TextureLoader();
 
     var mesh = new THREE.Mesh(
         geometry,
