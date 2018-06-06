@@ -145,7 +145,7 @@
     <script src="js/dat.gui.min.js"></script>
 
     <!-- This script section is for creating the skydome. -->
-    <script type="application/x-glsl" id="sky-vertex">
+    <script type="application/x-glsl" id="vertex">
         varying vec2 vUV;
 
         void main() {
@@ -155,7 +155,7 @@
         }
     </script>
 
-    <script type="application/x-glsl" id="sky-fragment">
+    <script type="application/x-glsl" id="fragment">
         uniform sampler2D texture;
         varying vec2 vUV;
 
@@ -168,15 +168,15 @@
     <script>
         var skyDomeTextureLoader = new THREE.TextureLoader();
 
-        var skyDomeGeometry = new THREE.SphereGeometry(3000, 50, 50);
+        var skyDomeGeometry = new THREE.SphereGeometry(2000, 50, 50);
         var uniforms = {
             texture: { type: 't', value: THREE.ImageUtils.loadTexture('img/skydome.jpg') }
         };
 
         var skyDomeMaterial = new THREE.ShaderMaterial( {
             uniforms:       uniforms,
-            vertexShader:   document.getElementById('sky-vertex').textContent,
-            fragmentShader: document.getElementById('sky-fragment').textContent
+            vertexShader:   document.getElementById('vertex').textContent,
+            fragmentShader: document.getElementById('fragment').textContent
         } );
 
         var skyDome = new THREE.Mesh(skyDomeGeometry, skyDomeMaterial);
@@ -287,7 +287,6 @@
         bone.visible = false;
         scene.add(bone);
 
-
         /////////////
         /// light ///
         /////////////
@@ -295,6 +294,8 @@
         scene.add(ambientLight);
 
         var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 0.5);
+        // hemiLight.color.setHSL(0.6, 1, 0.6);
+        // hemiLight.groundColor.setHSL(0.1, 1, 0.6);
         hemiLight.position.set(0, 200, 0);
         scene.add(hemiLight);
 
@@ -321,7 +322,7 @@
         /////////////
         var dirLightControl = new function () {
             this.intensity = 1;
-            this.inclination = 0.15;
+            this.inclination = 0.2;
             this.azimuth = 0.19;
             this.color = 0xFFFFFF;
         };
