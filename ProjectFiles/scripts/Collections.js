@@ -20,7 +20,7 @@ function useMaterial(color, collection, transparency) {
             flatShading: true
         });
         material.color.setHex(color);
-        material.bumpMap = loader.load('img/mi.jpg');
+        material.bumpMap = loader.load('img/mi.JPG');
         collection[color] = material;
         console.log("new material created!");
     }
