@@ -20,7 +20,7 @@ function useMaterial(color, collection, transparency) {
             flatShading: true
         });
         material.color.setHex(color);
-        material.normalMap = loader.load('img/legoNormal2.png');
+        material.bumpMap = loader.load('img/mi.jpg');
         collection[color] = material;
         console.log("new material created!");
     }
