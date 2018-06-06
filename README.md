@@ -4,6 +4,6 @@
 
 
 # Sample working site:
-http://www-student.it.uts.edu.au/~mizhou/cg/Project3D/ProjectFiles/AmyTrySceneV2.html
+http://www-student.it.uts.edu.au/~mizhou/cg/Project3D/ProjectFiles/
 
 # Available 3D model sites apart from turbosquid: sketchfab.com clara.io 
